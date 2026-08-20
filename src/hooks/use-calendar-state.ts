@@ -1,6 +1,3 @@
-import { useEffect, useRef, useState } from 'react'
-import { useServerFn } from '@tanstack/react-start'
-
 import {
   ensureCalendarStateFn,
   getServerTimeFn,
@@ -13,55 +10,38 @@ import {
   isWindowUnlocked,
   setEncryptedCalendarState,
 } from '#/lib/calendar/calendar-storage'
+import { useEffect, useState } from 'react'
 
 import type { CalendarState } from '#/lib/calendar/calendar-storage'
+import { useServerFn } from '@tanstack/react-start'
 
 // If the device clock drifts from the server by more than this, warn the user.
 const CLOCK_MISMATCH_THRESHOLD_MS = 5 * 60 * 1000
-// How often to re-sync with the server clock, so a mid-session clock change is caught.
-const CLOCK_SYNC_INTERVAL_MS = 60000
 
 export function useCalendarState() {
   const [state, setState] = useState<CalendarState | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [timeUntilUnlock, setTimeUntilUnlock] = useState<number | null>(null)
+  const [clockOffsetMs, setClockOffsetMs] = useState(0)
   const [isClockMismatched, setIsClockMismatched] = useState(false)
-  // Server epoch + a monotonic clock reading taken at the same instant, so
-  // "now" is derived from elapsed monotonic time rather than the device's
-  // wall clock, which the user can change at any point during the session.
-  const clockAnchorRef = useRef<{ serverEpochMs: number; perfMs: number } | null>(
-    null,
-  )
 
   const ensureCalendarState = useServerFn(ensureCalendarStateFn)
   const openCalendarWindow = useServerFn(openCalendarWindowFn)
   const getServerTime = useServerFn(getServerTimeFn)
 
   // Server-corrected "now" - never the raw, possibly-manipulated device clock.
-  const trustedNow = () => {
-    const anchor = clockAnchorRef.current
-    if (!anchor) return new Date()
-    return new Date(anchor.serverEpochMs + (performance.now() - anchor.perfMs))
-  }
-
-  const syncClock = async () => {
-    const perfBefore = performance.now()
-    const { now: serverNowIso } = await getServerTime()
-    const perfAfter = performance.now()
-
-    // Estimate the server epoch at `perfAfter`, correcting for round-trip latency.
-    const roundTripMs = perfAfter - perfBefore
-    const serverEpochMs = new Date(serverNowIso).getTime() + roundTripMs / 2
-    clockAnchorRef.current = { serverEpochMs, perfMs: perfAfter }
-
-    setIsClockMismatched(
-      Math.abs(Date.now() - serverEpochMs) > CLOCK_MISMATCH_THRESHOLD_MS,
-    )
-  }
+  const trustedNow = () => new Date(Date.now() + clockOffsetMs)
 
   useEffect(() => {
     async function loadState() {
-      await syncClock()
+      const clientBefore = Date.now()
+      const { now: serverNowIso } = await getServerTime()
+      const serverEpoch = new Date(serverNowIso).getTime()
+
+      setClockOffsetMs(serverEpoch - clientBefore)
+      setIsClockMismatched(
+        Math.abs(clientBefore - serverEpoch) > CLOCK_MISMATCH_THRESHOLD_MS,
+      )
 
       const encryptedData = getEncryptedCalendarState()
       const result = await ensureCalendarState({ data: { encryptedData } })
@@ -77,17 +57,15 @@ export function useCalendarState() {
   useEffect(() => {
     if (!state) return
 
-    const updateTime = async () => {
-      await syncClock()
+    const updateTime = () => {
       setTimeUntilUnlock(getTimeUntilNextUnlock(state, trustedNow()))
     }
 
     updateTime()
-    const interval = setInterval(updateTime, CLOCK_SYNC_INTERVAL_MS)
+    const interval = setInterval(updateTime, 60000) // Update every minute
 
     return () => clearInterval(interval)
-  }, [state])
-
+  }, [state, clockOffsetMs])
 
   const openWindow = async (day: number): Promise<boolean> => {
     const encryptedData = getEncryptedCalendarState()
