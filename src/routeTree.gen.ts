@@ -11,7 +11,9 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as CalendarWindowDayRouteImport } from './routes/calendar/window/$day'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -23,40 +25,66 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SnakeRoute = SnakeRouteImport.update({
+  id: '/snake',
+  path: '/snake',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarWindowDayRoute = CalendarWindowDayRouteImport.update({
+  id: '/calendar/window/$day',
+  path: '/calendar/window/$day',
   getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/snake': typeof SnakeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/snake': typeof SnakeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/snake': typeof SnakeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/demo/tanstack-query'
+  fullPaths:
+    '/' | '/about' | '/snake' | '/demo/tanstack-query' | '/calendar/window/$day'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/demo/tanstack-query'
-  id: '__root__' | '/' | '/about' | '/demo/tanstack-query'
+  to:
+    '/' | '/about' | '/snake' | '/demo/tanstack-query' | '/calendar/window/$day'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/snake'
+    | '/demo/tanstack-query'
+    | '/calendar/window/$day'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  SnakeRoute: typeof SnakeRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  CalendarWindowDayRoute: typeof CalendarWindowDayRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -75,11 +103,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/snake': {
+      id: '/snake'
+      path: '/snake'
+      fullPath: '/snake'
+      preLoaderRoute: typeof SnakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
       path: '/demo/tanstack-query'
       fullPath: '/demo/tanstack-query'
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar/window/$day': {
+      id: '/calendar/window/$day'
+      path: '/calendar/window/$day'
+      fullPath: '/calendar/window/$day'
+      preLoaderRoute: typeof CalendarWindowDayRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -88,7 +130,9 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  SnakeRoute: SnakeRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  CalendarWindowDayRoute: CalendarWindowDayRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
