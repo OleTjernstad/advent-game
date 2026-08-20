@@ -42,13 +42,15 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="nb" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body className="font-sans antialiased">
-        {children}
+        <main className="relative min-h-screen overflow-hidden bg-linear-to-b from-[#0a1628] via-[#1a2f4a] to-[#0a1628]">
+          {children}
+        </main>
 
         <TanStackDevtools
           config={{

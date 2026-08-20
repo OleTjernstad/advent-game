@@ -1,4 +1,5 @@
 import { AlertTriangle, Clock } from 'lucide-react'
+
 import { CalendarWindow } from '#/components/calendar/CalendarWindow'
 import { CompletionModal } from '#/components/calendar/CompletionModal'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
@@ -35,7 +36,7 @@ function AdventCalendar() {
   const handleOpenWindow = (day: number) => openWindow(day)
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-linear-to-b from-[#0a1628] via-[#1a2f4a] to-[#0a1628]">
+    <div>
       <Snowflakes />
 
       <CompletionModal isOpen={isCompleted} />
@@ -45,8 +46,8 @@ function AdventCalendar() {
           <div className="mx-auto mb-6 flex max-w-2xl items-start gap-3 rounded-lg border border-yellow-500/40 bg-yellow-950/40 px-4 py-3 text-sm text-yellow-200">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
             <p>
-              Klokken på enheten din stemmer ikke med serveren. Luker låses
-              opp basert på serverens klokke, ikke din enhets klokke.
+              Klokken på enheten din stemmer ikke med serveren. Luker låses opp
+              basert på serverens klokke, ikke din enhets klokke.
             </p>
           </div>
         )}
@@ -96,6 +97,6 @@ function AdventCalendar() {
             )}
         </div>
       </div>
-    </main>
+    </div>
   )
 }
