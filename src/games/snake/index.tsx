@@ -168,29 +168,31 @@ export function SnakeGame() {
 
   return (
     <main className="page-wrap px-4 pb-10 pt-10 sm:pt-14">
-      <section className="island-shell rise-in overflow-hidden rounded-[2rem] p-5 sm:p-8">
+      <section className="rise-in overflow-hidden rounded-[2rem] border border-border bg-card p-5 shadow-xl sm:p-8">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="island-kicker mb-2">Classic arcade</p>
-            <h1 className="display-title m-0 text-4xl font-bold tracking-tight text-[var(--sea-ink)] sm:text-5xl">
+            <p className="mb-2 text-[0.69rem] font-bold uppercase tracking-[0.16em] text-primary-foreground">
+              Classic arcade
+            </p>
+            <h1 className="display-title m-0 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
               Snake
             </h1>
-            <p className="mt-2 mb-0 text-sm text-[var(--sea-ink-soft)]">
+            <p className="mt-2 mb-0 text-sm text-muted-foreground">
               Guide the little line, eat the dots, and keep growing.
             </p>
           </div>
           <div className="flex gap-2" aria-label="Game statistics">
-            <div className="rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] px-4 py-2">
-              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--sea-ink-soft)]">
+            <div className="rounded-xl border border-border bg-card px-4 py-2">
+              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                 Score
               </span>
-              <strong className="text-xl text-[var(--sea-ink)]">{score}</strong>
+              <strong className="text-xl text-card-foreground">{score}</strong>
             </div>
-            <div className="rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] px-4 py-2">
-              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-[var(--sea-ink-soft)]">
+            <div className="rounded-xl border border-border bg-card px-4 py-2">
+              <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
                 Best
               </span>
-              <strong className="flex items-center gap-1 text-xl text-[var(--sea-ink)]">
+              <strong className="flex items-center gap-1 text-xl text-card-foreground">
                 <Trophy size={15} />
                 {bestScore}
               </strong>
@@ -200,7 +202,7 @@ export function SnakeGame() {
 
         <div className="mx-auto max-w-[560px]">
           <div
-            className="grid aspect-square w-full touch-none gap-px rounded-2xl border-4 border-[var(--sea-ink)] bg-[var(--sea-ink)] p-1 shadow-[0_18px_40px_rgba(23,58,64,0.18)]"
+            className="grid aspect-square w-full touch-none gap-px rounded-2xl border-4 border-foreground bg-foreground p-1 shadow-lg"
             style={{
               gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
             }}
@@ -219,18 +221,18 @@ export function SnakeGame() {
               return (
                 <div
                   key={`${cell.x}-${cell.y}`}
-                  className={`relative rounded-[3px] ${snakeIndex === 0 ? 'bg-[var(--lagoon)]' : snakeIndex > -1 ? 'bg-[var(--palm)]' : 'bg-[rgba(243,250,245,0.78)]'}`}
+                  className={`relative rounded-[3px] ${snakeIndex === 0 ? 'bg-primary' : snakeIndex > -1 ? 'bg-sidebar-primary' : 'bg-muted'}`}
                   role="gridcell"
                 >
                   {isFood && (
-                    <span className="absolute inset-[23%] rounded-full bg-[#ee765f] shadow-[0_0_0_3px_rgba(238,118,95,0.16)]" />
+                    <span className="absolute inset-[23%] rounded-full bg-destructive shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]" />
                   )}
                 </div>
               )
             })}
             {!isRunning && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                <div className="rounded-2xl border border-white/50 bg-[rgba(23,58,64,0.88)] px-5 py-3 text-center text-white shadow-xl">
+                <div className="rounded-2xl border border-border/50 bg-foreground px-5 py-3 text-center text-background shadow-xl">
                   <strong className="block text-lg">
                     {isGameOver
                       ? 'That was a close one.'
@@ -251,7 +253,7 @@ export function SnakeGame() {
               <button
                 type="button"
                 onClick={startNewGame}
-                className="inline-flex items-center gap-2 rounded-xl bg-[var(--sea-ink)] px-4 py-2.5 text-sm font-bold text-white hover:-translate-y-0.5 hover:bg-[var(--lagoon-deep)]"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
               >
                 {isGameOver ? <RotateCcw size={17} /> : <Play size={17} />}
                 {isGameOver ? 'Play again' : 'Start game'}
@@ -260,13 +262,13 @@ export function SnakeGame() {
                 type="button"
                 onClick={() => setIsRunning((running) => !running)}
                 disabled={isGameOver}
-                className="inline-flex items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] px-4 py-2.5 text-sm font-bold text-[var(--sea-ink)] hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+                className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
               >
                 {isRunning ? <Pause size={17} /> : <Play size={17} />}
                 {isRunning ? 'Pause' : 'Resume'}
               </button>
             </div>
-            <span className="text-xs font-semibold text-[var(--sea-ink-soft)]">
+            <span className="text-xs font-semibold text-muted-foreground">
               {status} · {direction} direction
             </span>
           </div>
@@ -279,7 +281,7 @@ export function SnakeGame() {
             <button
               type="button"
               onClick={() => changeDirection('up')}
-              className="rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] py-3 text-lg text-[var(--sea-ink)]"
+              className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
               aria-label="Move up"
             >
               ↑
@@ -288,7 +290,7 @@ export function SnakeGame() {
             <button
               type="button"
               onClick={() => changeDirection('left')}
-              className="rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] py-3 text-lg text-[var(--sea-ink)]"
+              className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
               aria-label="Move left"
             >
               ←
@@ -296,7 +298,7 @@ export function SnakeGame() {
             <button
               type="button"
               onClick={() => changeDirection('down')}
-              className="rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] py-3 text-lg text-[var(--sea-ink)]"
+              className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
               aria-label="Move down"
             >
               ↓
@@ -304,13 +306,13 @@ export function SnakeGame() {
             <button
               type="button"
               onClick={() => changeDirection('right')}
-              className="rounded-xl border border-[var(--line)] bg-[var(--chip-bg)] py-3 text-lg text-[var(--sea-ink)]"
+              className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
               aria-label="Move right"
             >
               →
             </button>
           </div>
-          <p className="mt-5 text-center text-xs text-[var(--sea-ink-soft)]">
+          <p className="mt-5 text-center text-xs text-muted-foreground">
             Arrow keys or WASD to move · Space to pause
           </p>
         </div>
