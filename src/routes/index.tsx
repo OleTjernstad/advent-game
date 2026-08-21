@@ -43,7 +43,7 @@ function AdventCalendar() {
 
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
         {isClockMismatched && (
-          <div className="mx-auto mb-6 flex max-w-2xl items-start gap-3 rounded-lg border border-yellow-500/40 bg-yellow-950/40 px-4 py-3 text-sm text-yellow-200">
+          <div className="mx-auto mb-6 flex max-w-2xl items-start gap-3 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
             <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
             <p>
               Klokken på enheten din stemmer ikke med serveren. Luker låses opp
@@ -53,10 +53,10 @@ function AdventCalendar() {
         )}
 
         <header className="mb-8 text-center md:mb-12">
-          <h1 className="mb-2 font-serif text-4xl font-bold text-[#f4e4c1] md:text-6xl">
+          <h1 className="mb-2 font-serif text-4xl font-bold text-foreground md:text-6xl">
             Adventskalender
           </h1>
-          <p className="text-lg text-[#d4af37] md:text-xl">
+          <p className="text-lg text-primary md:text-xl">
             Åpne en luke hver dag frem til cachen åpnes!
           </p>
         </header>
@@ -74,10 +74,10 @@ function AdventCalendar() {
         </div>
 
         <div className="mt-8 flex flex-col items-center gap-4">
-          <div className="inline-block rounded-lg border border-[#d4af37]/30 bg-[#1a3a2e]/50 px-6 py-3 backdrop-blur-sm">
-            <p className="text-sm text-[#f4e4c1]">
+          <div className="inline-block rounded-lg border border-border bg-card/50 px-6 py-3 backdrop-blur-sm">
+            <p className="text-sm text-card-foreground">
               Luker åpnet:{' '}
-              <span className="font-bold text-[#d4af37]">{openedCount}</span> /
+              <span className="font-bold text-primary">{openedCount}</span> /
               24
             </p>
           </div>
@@ -85,11 +85,11 @@ function AdventCalendar() {
           {timeUntilUnlock !== null &&
             timeUntilUnlock > 0 &&
             openedCount < 24 && (
-              <div className="inline-flex items-center gap-2 rounded-lg border border-[#d4af37]/30 bg-[#1a3a2e]/50 px-6 py-3 backdrop-blur-sm">
-                <Clock className="h-4 w-4 text-[#d4af37]" />
-                <p className="text-sm text-[#f4e4c1]">
+              <div className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/50 px-6 py-3 backdrop-blur-sm">
+                <Clock className="h-4 w-4 text-muted-foreground" />
+                <p className="text-sm text-card-foreground">
                   Neste luke åpner om:{' '}
-                  <span className="font-bold text-[#d4af37]">
+                  <span className="font-bold text-primary">
                     {formatTimeRemaining(timeUntilUnlock)}
                   </span>
                 </p>

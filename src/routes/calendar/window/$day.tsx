@@ -27,14 +27,14 @@ function WindowPage() {
   }
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-linear-to-b from-[#0a1628] via-[#1a2f4a] to-[#0a1628]">
+    <div>
       <Snowflakes />
 
       <div className="relative z-10 container mx-auto px-4 py-8 md:py-12">
         {/* Back button */}
         <button
           onClick={() => router.history.back()}
-          className="mb-6 inline-flex items-center gap-2 text-[#d4af37] transition-colors duration-300 hover:text-[#f4e4c1]"
+          className="mb-6 inline-flex items-center gap-2 text-muted-foreground transition-colors duration-300 hover:text-foreground"
         >
           <ArrowLeft className="h-5 w-5" />
           <span className="text-sm md:text-base">Tilbake</span>
@@ -49,37 +49,37 @@ function WindowPage() {
           {/* Window number badge */}
           <div className="mb-6 flex justify-center">
             <div className="relative">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-[#d4af37] bg-linear-to-br from-[#8b2635] to-[#5a1623] shadow-lg shadow-[#d4af37]/30 md:h-24 md:w-24">
-                <span className="text-4xl font-bold text-[#f4e4c1] md:text-5xl">
+              <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-primary/70 bg-card shadow-lg shadow-primary/10 md:h-24 md:w-24">
+                <span className="text-4xl font-bold text-card-foreground md:text-5xl">
                   {day}
                 </span>
               </div>
-              <Sparkles className="absolute -top-2 -right-2 h-6 w-6 animate-pulse text-[#d4af37]" />
+              <Sparkles className="absolute -top-2 -right-2 h-6 w-6 animate-pulse text-primary" />
             </div>
           </div>
 
           {/* Main content card */}
-          <div className="relative rounded-2xl border-2 border-[#d4af37] bg-[#1a3a2e]/80 p-8 shadow-2xl shadow-[#d4af37]/20 backdrop-blur-sm md:p-12">
+          <div className="relative rounded-2xl border-2 border-border bg-card/80 p-8 shadow-2xl backdrop-blur-sm md:p-12">
             {/* Decorative corners */}
-            <div className="absolute top-4 left-4 h-4 w-4 border-t-2 border-l-2 border-[#d4af37]" />
-            <div className="absolute top-4 right-4 h-4 w-4 border-t-2 border-r-2 border-[#d4af37]" />
-            <div className="absolute bottom-4 left-4 h-4 w-4 border-b-2 border-l-2 border-[#d4af37]" />
-            <div className="absolute right-4 bottom-4 h-4 w-4 border-r-2 border-b-2 border-[#d4af37]" />
+            <div className="absolute top-4 left-4 h-4 w-4 border-t-2 border-l-2 border-primary/60" />
+            <div className="absolute top-4 right-4 h-4 w-4 border-t-2 border-r-2 border-primary/60" />
+            <div className="absolute bottom-4 left-4 h-4 w-4 border-b-2 border-l-2 border-primary/60" />
+            <div className="absolute right-4 bottom-4 h-4 w-4 border-r-2 border-b-2 border-primary/60" />
 
             {/* Title */}
             <div className="mb-6 flex items-center justify-center gap-3">
-              <Gift className="h-6 w-6 text-[#d4af37] md:h-8 md:w-8" />
-              <h1 className="text-center font-serif text-3xl font-bold text-[#f4e4c1] md:text-5xl">
+              <Gift className="h-6 w-6 text-primary md:h-8 md:w-8" />
+              <h1 className="text-center font-serif text-3xl font-bold text-card-foreground md:text-5xl">
                 {content.title}
               </h1>
-              <Gift className="h-6 w-6 text-[#d4af37] md:h-8 md:w-8" />
+              <Gift className="h-6 w-6 text-primary md:h-8 md:w-8" />
             </div>
 
             {/* Divider */}
-            <div className="mx-auto mb-8 h-1 w-24 bg-linear-to-r from-transparent via-[#d4af37] to-transparent" />
+            <div className="mx-auto mb-8 h-1 w-24 bg-linear-to-r from-transparent via-border to-transparent" />
 
             {/* Description */}
-            <p className="text-center font-sans text-lg leading-relaxed text-[#f4e4c1] md:text-xl">
+            <p className="text-center font-sans text-lg leading-relaxed text-card-foreground md:text-xl">
               {content.text}
             </p>
 
@@ -88,7 +88,7 @@ function WindowPage() {
               {[...Array(5)].map((_, i) => (
                 <div
                   key={i}
-                  className="h-2 w-2 animate-pulse rounded-full bg-[#d4af37]"
+                  className="h-2 w-2 animate-pulse rounded-full bg-primary/70"
                   style={{ animationDelay: `${i * 0.2}s` }}
                 />
               ))}
@@ -97,12 +97,12 @@ function WindowPage() {
 
           {/* Bottom decoration */}
           <div className="mt-8 text-center">
-            <p className="text-sm text-[#d4af37] italic md:text-base">
+            <p className="text-sm text-muted-foreground italic md:text-base">
               Dag {day} av 24
             </p>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   )
 }
