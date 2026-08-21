@@ -1,4 +1,4 @@
-import { AlertTriangle, Clock, Divide } from 'lucide-react'
+import { AlertTriangle, Clock } from 'lucide-react'
 
 import { CalendarWindow } from '#/components/calendar/CalendarWindow'
 import { CompletionModal } from '#/components/calendar/CompletionModal'

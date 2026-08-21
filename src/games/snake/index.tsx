@@ -1,4 +1,13 @@
-import { Pause, Play, RotateCcw, Trophy } from 'lucide-react'
+import {
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  ChevronUp,
+  Pause,
+  Play,
+  RotateCcw,
+  Trophy,
+} from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
 const BOARD_SIZE = 20
@@ -167,90 +176,127 @@ export function SnakeGame() {
       : 'Ready to play'
 
   return (
-    <section className="rise-in overflow-hidden rounded-[2rem] border border-border bg-card p-5 shadow-xl sm:p-8">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="mb-2 text-[0.69rem] font-bold uppercase tracking-[0.16em] text-primary-foreground">
-            Classic arcade
-          </p>
-          <h1 className="display-title m-0 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Snake
-          </h1>
-          <p className="mt-2 mb-0 text-sm text-muted-foreground">
-            Guide the little line, eat the dots, and keep growing.
-          </p>
+    <section className="rise-in w-full">
+      <div className="grid w-full items-center gap-6 lg:grid-cols-[minmax(0,1fr)_12rem] lg:gap-10">
+        <div className="mx-auto w-full max-w-140">
+          <div
+            className="relative grid aspect-square w-full touch-none gap-px border-4 border-foreground bg-foreground p-1 shadow-lg"
+            style={{
+              gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
+            }}
+            aria-label={`Snake board. ${status}. Use arrow keys or WASD to move.`}
+            role="grid"
+          >
+            {Array.from({ length: BOARD_SIZE * BOARD_SIZE }, (_, index) => {
+              const cell = {
+                x: index % BOARD_SIZE,
+                y: Math.floor(index / BOARD_SIZE),
+              }
+              const snakeIndex = snake.findIndex((segment) =>
+                pointsMatch(segment, cell),
+              )
+              const isFood = pointsMatch(food, cell)
+              return (
+                <div
+                  key={`${cell.x}-${cell.y}`}
+                  className={`relative rounded-[3px] ${snakeIndex === 0 ? 'bg-primary' : snakeIndex > -1 ? 'bg-sidebar-primary' : 'bg-muted'}`}
+                  role="gridcell"
+                >
+                  {isFood && (
+                    <span className="absolute inset-[23%] rounded-full bg-destructive shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]" />
+                  )}
+                </div>
+              )
+            })}
+            {!isRunning && (
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div className="rounded-2xl border border-border/50 bg-foreground px-5 py-3 text-center text-background shadow-xl">
+                  <strong className="block text-lg">
+                    {isGameOver
+                      ? 'That was a close one.'
+                      : 'Ready when you are.'}
+                  </strong>
+                  <span className="text-xs text-white/75">
+                    {isGameOver
+                      ? `You scored ${score}.`
+                      : 'Press start or use an arrow key.'}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="mt-5 flex items-center justify-between gap-3 lg:hidden">
+            <span className="text-xs font-semibold text-muted-foreground">
+              {status} · {direction} direction
+            </span>
+          </div>
         </div>
-        <div className="flex gap-2" aria-label="Game statistics">
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+
+        <div
+          className="mx-auto mt-6 grid w-44 grid-cols-3 gap-2 lg:hidden"
+          aria-label="Direction controls"
+        >
+          <span />
+          <button
+            type="button"
+            onClick={() => changeDirection('up')}
+            className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
+            aria-label="Move up"
+          >
+            <ChevronUp />
+          </button>
+          <span />
+          <button
+            type="button"
+            onClick={() => changeDirection('left')}
+            className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
+            aria-label="Move left"
+          >
+            <ChevronLeft />
+          </button>
+          <button
+            type="button"
+            onClick={() => changeDirection('down')}
+            className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
+            aria-label="Move down"
+          >
+            <ChevronDown />
+          </button>
+          <button
+            type="button"
+            onClick={() => changeDirection('right')}
+            className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
+            aria-label="Move right"
+          >
+            <ChevronRight />
+          </button>
+        </div>
+
+        <aside
+          className="grid grid-cols-2 gap-3 lg:grid-cols-1"
+          aria-label="Game controls"
+        >
+          <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Score
             </span>
-            <strong className="text-xl text-card-foreground">{score}</strong>
+            <strong className="text-3xl text-card-foreground">{score}</strong>
           </div>
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+          <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Best
             </span>
-            <strong className="flex items-center gap-1 text-xl text-card-foreground">
-              <Trophy size={15} />
+            <strong className="flex items-center gap-1 text-2xl text-card-foreground">
+              <Trophy size={17} />
               {bestScore}
             </strong>
           </div>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-[560px]">
-        <div
-          className="grid aspect-square w-full touch-none gap-px rounded-2xl border-4 border-foreground bg-foreground p-1 shadow-lg"
-          style={{
-            gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
-          }}
-          aria-label={`Snake board. ${status}. Use arrow keys or WASD to move.`}
-          role="grid"
-        >
-          {Array.from({ length: BOARD_SIZE * BOARD_SIZE }, (_, index) => {
-            const cell = {
-              x: index % BOARD_SIZE,
-              y: Math.floor(index / BOARD_SIZE),
-            }
-            const snakeIndex = snake.findIndex((segment) =>
-              pointsMatch(segment, cell),
-            )
-            const isFood = pointsMatch(food, cell)
-            return (
-              <div
-                key={`${cell.x}-${cell.y}`}
-                className={`relative rounded-[3px] ${snakeIndex === 0 ? 'bg-primary' : snakeIndex > -1 ? 'bg-sidebar-primary' : 'bg-muted'}`}
-                role="gridcell"
-              >
-                {isFood && (
-                  <span className="absolute inset-[23%] rounded-full bg-destructive shadow-[0_0_0_3px_color-mix(in_oklab,var(--destructive)_16%,transparent)]" />
-                )}
-              </div>
-            )
-          })}
-          {!isRunning && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <div className="rounded-2xl border border-border/50 bg-foreground px-5 py-3 text-center text-background shadow-xl">
-                <strong className="block text-lg">
-                  {isGameOver ? 'That was a close one.' : 'Ready when you are.'}
-                </strong>
-                <span className="text-xs text-white/75">
-                  {isGameOver
-                    ? `You scored ${score}.`
-                    : 'Press start or use an arrow key.'}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex gap-2">
+          <div className="col-span-2 flex gap-2 lg:col-span-1 lg:flex-col">
             <button
               type="button"
               onClick={startNewGame}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
+              className="inline-flex flex-1 items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
             >
               {isGameOver ? <RotateCcw size={17} /> : <Play size={17} />}
               {isGameOver ? 'Play again' : 'Start game'}
@@ -259,60 +305,21 @@ export function SnakeGame() {
               type="button"
               onClick={() => setIsRunning((running) => !running)}
               disabled={isGameOver}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex flex-1 items-center justify-center gap-2 border border-border px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isRunning ? <Pause size={17} /> : <Play size={17} />}
               {isRunning ? 'Pause' : 'Resume'}
             </button>
           </div>
-          <span className="text-xs font-semibold text-muted-foreground">
+          <span className="col-span-2 hidden text-xs font-semibold text-muted-foreground lg:block">
             {status} · {direction} direction
           </span>
-        </div>
-
-        <div
-          className="mx-auto mt-6 grid w-40 grid-cols-3 gap-2 sm:hidden"
-          aria-label="Direction controls"
-        >
-          <span />
-          <button
-            type="button"
-            onClick={() => changeDirection('up')}
-            className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
-            aria-label="Move up"
-          >
-            ↑
-          </button>
-          <span />
-          <button
-            type="button"
-            onClick={() => changeDirection('left')}
-            className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
-            aria-label="Move left"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            onClick={() => changeDirection('down')}
-            className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
-            aria-label="Move down"
-          >
-            ↓
-          </button>
-          <button
-            type="button"
-            onClick={() => changeDirection('right')}
-            className="rounded-xl border border-border bg-card py-3 text-lg text-card-foreground"
-            aria-label="Move right"
-          >
-            →
-          </button>
-        </div>
-        <p className="mt-5 text-center text-xs text-muted-foreground">
-          Arrow keys or WASD to move · Space to pause
-        </p>
+        </aside>
       </div>
+
+      <p className="mt-5 text-center text-xs text-muted-foreground">
+        Arrow keys or WASD to move · Space to pause
+      </p>
     </section>
   )
 }

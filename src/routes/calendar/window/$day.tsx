@@ -2,6 +2,7 @@ import { ArrowLeft, Gift, Lock, Sparkles } from 'lucide-react'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
+import { SnakeGame } from '#/games/snake'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
 import { useCalendarState } from '#/hooks/use-calendar-state'
 import windowContent from '#/data/window-content.json'
@@ -56,54 +57,47 @@ function WindowPage() {
           <span className="text-sm md:text-base">Tilbake</span>
         </button>
 
-        {/* Content card */}
+        {/* Window layout */}
         <div
-          className={`mx-auto transition-all duration-1000 ${
+          className={`transition-all duration-1000 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
-          {/* Window number badge */}
-          <div className="mb-6 flex justify-center">
-            <div className="relative">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full border-4 border-primary/70 bg-card shadow-lg shadow-primary/10 md:h-24 md:w-24">
-                <span className="text-4xl font-bold text-card-foreground md:text-5xl">
-                  {day}
-                </span>
+          <div className="grid overflow-hidden border-2 border-border bg-card/80 shadow-2xl backdrop-blur-sm md:grid-cols-[minmax(12rem,0.7fr)_minmax(0,2fr)]">
+            <div className="flex min-h-46 items-center justify-center border-b-2 border-border bg-secondary/50 p-8 md:min-h-full md:border-r-2 md:border-b-0">
+              <div className="relative">
+                <div className="flex h-18 w-18 items-center justify-center rounded-full border-4 border-primary/70 bg-card shadow-lg shadow-primary/10 md:h-26 md:w-26">
+                  <span className="text-5xl font-bold text-card-foreground md:text-6xl">
+                    {day}
+                  </span>
+                </div>
+                <Sparkles className="absolute -top-2 -right-2 h-7 w-7 animate-pulse text-primary" />
               </div>
-              <Sparkles className="absolute -top-2 -right-2 h-6 w-6 animate-pulse text-primary" />
+            </div>
+
+            <div className="flex flex-col justify-center p-8 md:p-12">
+              <div className="mb-6 flex items-center gap-3">
+                <Gift className="h-6 w-6 shrink-0 text-primary md:h-8 md:w-8" />
+                <h1 className="font-serif text-3xl font-bold text-card-foreground md:text-5xl">
+                  {content.title}
+                </h1>
+              </div>
+
+              <div className="mb-8 h-1 w-24 bg-linear-to-r from-border to-transparent" />
+
+              <p className="font-sans text-lg leading-relaxed text-card-foreground md:text-xl">
+                {content.text}
+              </p>
             </div>
           </div>
 
-          {/* Main content card */}
-          <div className="relative  border-2 border-border bg-card/80 p-8 shadow-2xl backdrop-blur-sm md:p-12">
-            {/* Title */}
-            <div className="mb-6 flex items-center justify-center gap-3">
-              <Gift className="h-6 w-6 text-primary md:h-8 md:w-8" />
-              <h1 className="text-center font-serif text-3xl font-bold text-card-foreground md:text-5xl">
-                {content.title}
-              </h1>
-              <Gift className="h-6 w-6 text-primary md:h-8 md:w-8" />
-            </div>
-
-            {/* Divider */}
-            <div className="mx-auto mb-8 h-1 w-24 bg-linear-to-r from-transparent via-border to-transparent" />
-
-            {/* Description */}
-            <p className="text-center font-sans text-lg leading-relaxed text-card-foreground md:text-xl">
-              {content.text}
-            </p>
-
-            {/* Decorative element */}
-            <div className="mt-8 flex justify-center gap-2">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-2 w-2 animate-pulse rounded-full bg-primary/70"
-                  style={{ animationDelay: `${i * 0.2}s` }}
-                />
-              ))}
-            </div>
-          </div>
+          <section
+            aria-label={`Spillområde for dag ${day}`}
+            className="mt-6 flex min-h-104 items-center justify-center border-2 border-dashed border-border bg-card/60 p-6 shadow-xl backdrop-blur-sm md:min-h-[34rem] md:p-10"
+          >
+            {/* <Gift className="h-12 w-12 text-primary/70 md:h-16 md:w-16" /> */}
+            <SnakeGame />
+          </section>
 
           {/* Bottom decoration */}
           <div className="mt-8 text-center">
