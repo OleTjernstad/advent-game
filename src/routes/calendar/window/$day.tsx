@@ -1,8 +1,9 @@
-import { ArrowLeft, Gift, Sparkles } from 'lucide-react'
+import { ArrowLeft, Gift, Lock, Sparkles } from 'lucide-react'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
 import { Snowflakes } from '#/components/calendar/Snowflakes'
+import { useCalendarState } from '#/hooks/use-calendar-state'
 import windowContent from '#/data/window-content.json'
 
 export const Route = createFileRoute('/calendar/window/$day')({
@@ -15,6 +16,7 @@ function WindowPage() {
   const day = Number(dayParam)
   const [isVisible, setIsVisible] = useState(false)
 
+  const { isUnlocked, isOpened, isLoading } = useCalendarState() // Ensure calendar state is loaded before rendering the window content.
   const content = windowContent.windows.find((w) => w.day === day)
 
   useEffect(() => {
@@ -22,6 +24,21 @@ function WindowPage() {
     return () => clearTimeout(timeout)
   }, [])
 
+  console.log(`isUnlocked, ${day}`, isUnlocked(day), isOpened(day), isLoading)
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-4 text-center">
+        <div className="h-12 w-12 animate-spin rounded-full border-4 border-t-primary" />
+      </div>
+    )
+  }
+  if (!isUnlocked(day) && !isOpened(day)) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-4 text-center">
+        <Lock className="h-12 w-12 text-muted-foreground" />
+      </div>
+    )
+  }
   if (!content) {
     return null
   }
