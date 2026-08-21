@@ -3,12 +3,14 @@
     {
       "day": 1,
       "title": "Første lys tennes 🕯️",
-      "text": "Desember er her, og Olet tenner det første adventslyset. Duften av kongerøkelse fyller stua, og kaffekoppen varmer hendene. Han finner fram notatboka si og skriver årets førjulsplan: småkaker, pynt, og en tur ut for å hente granbar. Det er noe magisk med starten – som et nytt kart før en reise."
+      "text": "Desember er her, og Olet tenner det første adventslyset. Duften av kongerøkelse fyller stua, og kaffekoppen varmer hendene. Han finner fram notatboka si og skriver årets førjulsplan: småkaker, pynt, og en tur ut for å hente granbar. Det er noe magisk med starten – som et nytt kart før en reise.",
+      "game": "snakeGame"
     },
     {
       "day": 2,
       "title": "Bakst og latter 🍪",
-      "text": "Vesla89 inviterer til bakestund. Smør, sukker og vaniljesukker vispes sammen mens melstøvet legger seg som lett snø over kjøkkenbenken. De lager serinakaker – sprø og søte, med perlesukker på toppen. Radiokanalen spiller julemusikk, og latteren sitter løst. Første kakeboks er fylt!"
+      "text": "Vesla89 inviterer til bakestund. Smør, sukker og vaniljesukker vispes sammen mens melstøvet legger seg som lett snø over kjøkkenbenken. De lager serinakaker – sprø og søte, med perlesukker på toppen. Radiokanalen spiller julemusikk, og latteren sitter løst. Første kakeboks er fylt!",
+      "game": "breakout"
     },
     {
       "day": 3,

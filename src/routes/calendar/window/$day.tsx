@@ -2,6 +2,8 @@ import { ArrowLeft, Gift, Lock, Sparkles } from 'lucide-react'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useEffect, useState } from 'react'
 
+import type { GameType } from '#/games/types'
+import { RenderGame } from '#/games/renderer'
 import { SnakeGame } from '#/games/snake'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
 import { useCalendarState } from '#/hooks/use-calendar-state'
@@ -95,8 +97,9 @@ function WindowPage() {
             aria-label={`Spillområde for dag ${day}`}
             className="mt-6 flex min-h-104 items-center justify-center border-2 border-dashed border-border bg-card/60 p-6 shadow-xl backdrop-blur-sm md:min-h-[34rem] md:p-10"
           >
-            {/* <Gift className="h-12 w-12 text-primary/70 md:h-16 md:w-16" /> */}
-            <SnakeGame />
+            {content.game ? (
+              <RenderGame game={content.game as GameType} />
+            ) : null}
           </section>
 
           {/* Bottom decoration */}
