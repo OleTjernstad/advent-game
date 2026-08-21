@@ -24,7 +24,6 @@ function WindowPage() {
     return () => clearTimeout(timeout)
   }, [])
 
-  console.log(`isUnlocked, ${day}`, isUnlocked(day), isOpened(day), isLoading)
   if (isLoading) {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center gap-4 bg-background px-4 text-center">
@@ -59,7 +58,7 @@ function WindowPage() {
 
         {/* Content card */}
         <div
-          className={`mx-auto max-w-3xl transition-all duration-1000 ${
+          className={`mx-auto transition-all duration-1000 ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}
         >
@@ -76,13 +75,7 @@ function WindowPage() {
           </div>
 
           {/* Main content card */}
-          <div className="relative rounded-2xl border-2 border-border bg-card/80 p-8 shadow-2xl backdrop-blur-sm md:p-12">
-            {/* Decorative corners */}
-            <div className="absolute top-4 left-4 h-4 w-4 border-t-2 border-l-2 border-primary/60" />
-            <div className="absolute top-4 right-4 h-4 w-4 border-t-2 border-r-2 border-primary/60" />
-            <div className="absolute bottom-4 left-4 h-4 w-4 border-b-2 border-l-2 border-primary/60" />
-            <div className="absolute right-4 bottom-4 h-4 w-4 border-r-2 border-b-2 border-primary/60" />
-
+          <div className="relative  border-2 border-border bg-card/80 p-8 shadow-2xl backdrop-blur-sm md:p-12">
             {/* Title */}
             <div className="mb-6 flex items-center justify-center gap-3">
               <Gift className="h-6 w-6 text-primary md:h-8 md:w-8" />

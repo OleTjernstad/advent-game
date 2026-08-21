@@ -1,8 +1,9 @@
-import { AlertTriangle, Clock } from 'lucide-react'
+import { AlertTriangle, Clock, Divide } from 'lucide-react'
 
 import { CalendarWindow } from '#/components/calendar/CalendarWindow'
 import { CompletionModal } from '#/components/calendar/CompletionModal'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
+import ThemeToggle from '#/components/ThemeToggle'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCalendarState } from '#/hooks/use-calendar-state'
 
@@ -37,6 +38,9 @@ function AdventCalendar() {
 
   return (
     <div>
+      <div className="sticky top-0 z-50 flex h-16 w-full items-center justify-end px-4">
+        <ThemeToggle />
+      </div>
       <Snowflakes />
 
       <CompletionModal isOpen={isCompleted} />
@@ -77,8 +81,7 @@ function AdventCalendar() {
           <div className="inline-block rounded-lg border border-border bg-card/50 px-6 py-3 backdrop-blur-sm">
             <p className="text-sm text-card-foreground">
               Luker åpnet:{' '}
-              <span className="font-bold text-primary">{openedCount}</span> /
-              24
+              <span className="font-bold text-primary">{openedCount}</span> / 24
             </p>
           </div>
 

@@ -8,7 +8,6 @@ import type { QueryClient } from '@tanstack/react-query'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import ThemeToggle from '#/components/ThemeToggle'
 import appCss from '../styles.css?url'
 
 interface MyRouterContext {
@@ -50,12 +49,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="font-sans antialiased">
         <div className="relative min-h-screen overflow-hidden bg-background text-foreground">
-          <header className="sticky top-0 z-50 flex h-16 w-full items-center justify-end px-4">
-            <ThemeToggle />
-          </header>
           <main>{children}</main>
         </div>
-        3
         <TanStackDevtools
           config={{
             position: 'bottom-right',
