@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BreakoutRouteImport } from './routes/breakout'
 import { Route as SnakeRouteImport } from './routes/snake'
+import { Route as TicTacToeRouteImport } from './routes/tic-tac-toe'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
 import { Route as CalendarWindowDayRouteImport } from './routes/calendar/window/$day'
 
@@ -36,6 +37,11 @@ const SnakeRoute = SnakeRouteImport.update({
   path: '/snake',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TicTacToeRoute = TicTacToeRouteImport.update({
+  id: '/tic-tac-toe',
+  path: '/tic-tac-toe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   id: '/demo/tanstack-query',
   path: '/demo/tanstack-query',
@@ -52,6 +58,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/breakout': typeof BreakoutRoute
   '/snake': typeof SnakeRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
@@ -60,6 +67,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/breakout': typeof BreakoutRoute
   '/snake': typeof SnakeRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
@@ -69,6 +77,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/breakout': typeof BreakoutRoute
   '/snake': typeof SnakeRoute
+  '/tic-tac-toe': typeof TicTacToeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
@@ -79,6 +88,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/breakout'
     | '/snake'
+    | '/tic-tac-toe'
     | '/demo/tanstack-query'
     | '/calendar/window/$day'
   fileRoutesByTo: FileRoutesByTo
@@ -87,6 +97,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/breakout'
     | '/snake'
+    | '/tic-tac-toe'
     | '/demo/tanstack-query'
     | '/calendar/window/$day'
   id:
@@ -95,6 +106,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/breakout'
     | '/snake'
+    | '/tic-tac-toe'
     | '/demo/tanstack-query'
     | '/calendar/window/$day'
   fileRoutesById: FileRoutesById
@@ -104,6 +116,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   BreakoutRoute: typeof BreakoutRoute
   SnakeRoute: typeof SnakeRoute
+  TicTacToeRoute: typeof TicTacToeRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   CalendarWindowDayRoute: typeof CalendarWindowDayRoute
 }
@@ -138,6 +151,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SnakeRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tic-tac-toe': {
+      id: '/tic-tac-toe'
+      path: '/tic-tac-toe'
+      fullPath: '/tic-tac-toe'
+      preLoaderRoute: typeof TicTacToeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
       path: '/demo/tanstack-query'
@@ -160,6 +180,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   BreakoutRoute: BreakoutRoute,
   SnakeRoute: SnakeRoute,
+  TicTacToeRoute: TicTacToeRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   CalendarWindowDayRoute: CalendarWindowDayRoute,
 }
