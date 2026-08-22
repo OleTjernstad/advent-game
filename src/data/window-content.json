@@ -4,18 +4,25 @@
       "day": 1,
       "title": "Første lys tennes 🕯️",
       "text": "Desember er her, og Olet tenner det første adventslyset. Duften av kongerøkelse fyller stua, og kaffekoppen varmer hendene. Han finner fram notatboka si og skriver årets førjulsplan: småkaker, pynt, og en tur ut for å hente granbar. Det er noe magisk med starten – som et nytt kart før en reise.",
-      "game": "snakeGame"
+      "game": "snakeGame",
+      "game-name": "Snake Game",
+      "game-description": "Guide the snake to collect food and grow longer, but avoid running into walls or yourself!"
     },
     {
       "day": 2,
       "title": "Bakst og latter 🍪",
       "text": "Vesla89 inviterer til bakestund. Smør, sukker og vaniljesukker vispes sammen mens melstøvet legger seg som lett snø over kjøkkenbenken. De lager serinakaker – sprø og søte, med perlesukker på toppen. Radiokanalen spiller julemusikk, og latteren sitter løst. Første kakeboks er fylt!",
-      "game": "breakout"
+      "game": "tictactoe",
+      "game-name": "Tic Tac Toe",
+      "game-description": "Play the classic game of Tic Tac Toe against a friend or the computer. Get three in a row to win!"
     },
     {
       "day": 3,
       "title": "Kanelduft i huset 🎶",
-      "text": "Viking_Princess har hentet fram kjevlet. Pepperkakedeigen er ferdig avkjølt – laget av smør, sukker, sirup, kanel, nellik, ingefær og kardemomme. Hun og barna trykker ut hjerter og stjerner, og kjøkkenet fylles av latter og varme. I vinduet gløder adventsstjernen – et lite lys mot vintermørket."
+      "text": "Viking_Princess har hentet fram kjevlet. Pepperkakedeigen er ferdig avkjølt – laget av smør, sukker, sirup, kanel, nellik, ingefær og kardemomme. Hun og barna trykker ut hjerter og stjerner, og kjøkkenet fylles av latter og varme. I vinduet gløder adventsstjernen – et lite lys mot vintermørket.",
+      "game": "breakout",
+      "game-name": "Breakout Game",
+      "game-description": "Break through the bricks with your paddle and ball! Clear all the bricks to advance to the next level."
     },
     {
       "day": 4,

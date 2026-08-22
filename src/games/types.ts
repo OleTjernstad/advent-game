@@ -1,1 +1,1 @@
-export type GameType = 'snakeGame' | 'breakout'
+export type GameType = 'snakeGame' | 'breakout' | 'tictactoe'

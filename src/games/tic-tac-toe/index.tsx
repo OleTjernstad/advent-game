@@ -174,30 +174,121 @@ export function TicTacToeGame() {
           : `Your turn · ${playerMark}`
 
   return (
-    <section className="rise-in overflow-hidden rounded-[2rem] border border-border bg-card p-5 shadow-xl sm:p-8">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="mb-2 text-[0.69rem] font-bold uppercase tracking-[0.16em] text-primary-foreground">
-            Classic arcade
-          </p>
-          <h1 className="display-title m-0 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Tic-Tac-Toe
-          </h1>
-          <p className="mt-2 mb-0 text-sm text-muted-foreground">
-            Outsmart the computer and claim three in a row.
+    <section className="rise-in w-full">
+      <div className="grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-10">
+        <div className="mx-auto w-full max-w-140">
+          <div className="mb-5 grid gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-border bg-muted/40 p-3">
+              <span className="mb-2 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                Your mark
+              </span>
+              <div className="grid grid-cols-2 gap-2">
+                {(['X', 'O'] as Mark[]).map((mark) => (
+                  <button
+                    key={mark}
+                    type="button"
+                    onClick={() => changePlayerMark(mark)}
+                    className={`rounded-lg border px-3 py-2 text-sm font-bold transition-colors ${playerMark === mark ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-card-foreground hover:bg-accent'}`}
+                  >
+                    {mark}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <label className="rounded-xl border border-border bg-muted/40 p-3">
+              <span className="mb-2 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                Difficulty
+              </span>
+              <select
+                value={difficulty}
+                onChange={(event) => {
+                  setDifficulty(event.target.value as Difficulty)
+                  newRound()
+                }}
+                className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-card-foreground outline-none focus:ring-2 focus:ring-ring"
+              >
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="relative">
+            {winner && (
+              <div
+                className="absolute bottom-full left-1/2 z-10 mb-3 flex w-[calc(100%-1rem)] max-w-sm -translate-x-1/2 items-center justify-center gap-2 rounded-xl border border-primary/50 bg-primary px-4 py-3 text-center text-sm font-bold text-primary-foreground shadow-lg"
+                role="alert"
+                aria-live="polite"
+              >
+                <Trophy size={17} />
+                <span>
+                  {winner === 'draw'
+                    ? 'It is a draw!'
+                    : winner === playerMark
+                      ? 'You win the round!'
+                      : 'The computer wins the round.'}
+                </span>
+              </div>
+            )}
+            <div
+              className="grid aspect-square min-h-0 grid-cols-3 grid-rows-3 gap-2 rounded-2xl border-4 border-foreground bg-foreground p-2 shadow-lg"
+              role="grid"
+              aria-label={`Tic-Tac-Toe board. ${status}`}
+            >
+              {board.map((cell, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  role="gridcell"
+                  onClick={() => playMove(index)}
+                  disabled={Boolean(cell) || Boolean(winner) || isAiTurn}
+                  className={`flex min-h-0 items-center justify-center overflow-hidden rounded-xl bg-card text-6xl font-black leading-none transition-colors sm:text-8xl ${winningLine.includes(index) ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'} disabled:cursor-default`}
+                  aria-label={
+                    cell
+                      ? `Cell ${index + 1}: ${cell}`
+                      : `Cell ${index + 1}: empty`
+                  }
+                >
+                  {cell && (
+                    <span
+                      className={
+                        cell === 'X' ? 'text-primary' : 'text-destructive'
+                      }
+                    >
+                      {cell}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-5 flex items-center justify-between gap-3 lg:hidden">
+            <span className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+              <Bot size={17} />
+              {status}
+            </span>
+          </div>
+          <p className="mt-5 text-center text-xs text-muted-foreground">
+            Choose your mark, then click an empty square to play.
           </p>
         </div>
-        <div className="flex gap-2" aria-label="Session score">
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+
+        <aside
+          className="grid grid-cols-2 gap-3 lg:grid-cols-1"
+          aria-label="Session score and controls"
+        >
+          <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Wins
             </span>
-            <strong className="flex items-center gap-1 text-xl text-card-foreground">
-              <Trophy size={15} />
+            <strong className="flex items-center gap-1 text-2xl text-card-foreground">
+              <Trophy size={17} />
               {score.wins}
             </strong>
           </div>
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+          <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Draws
             </span>
@@ -205,7 +296,7 @@ export function TicTacToeGame() {
               {score.draws}
             </strong>
           </div>
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+          <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Losses
             </span>
@@ -213,114 +304,19 @@ export function TicTacToeGame() {
               {score.losses}
             </strong>
           </div>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-140">
-        <div className="mb-5 grid gap-3 sm:grid-cols-2">
-          <div className="rounded-xl border border-border bg-muted/40 p-3">
-            <span className="mb-2 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Your mark
-            </span>
-            <div className="grid grid-cols-2 gap-2">
-              {(['X', 'O'] as Mark[]).map((mark) => (
-                <button
-                  key={mark}
-                  type="button"
-                  onClick={() => changePlayerMark(mark)}
-                  className={`rounded-lg border px-3 py-2 text-sm font-bold transition-colors ${playerMark === mark ? 'border-primary bg-primary text-primary-foreground' : 'border-border bg-card text-card-foreground hover:bg-accent'}`}
-                >
-                  {mark}
-                </button>
-              ))}
-            </div>
-          </div>
-          <label className="rounded-xl border border-border bg-muted/40 p-3">
-            <span className="mb-2 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Difficulty
-            </span>
-            <select
-              value={difficulty}
-              onChange={(event) => {
-                setDifficulty(event.target.value as Difficulty)
-                newRound()
-              }}
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-card-foreground outline-none focus:ring-2 focus:ring-ring"
-            >
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </label>
-        </div>
-
-        <div className="relative">
-          {winner && (
-            <div
-              className="absolute bottom-full left-1/2 z-10 mb-3 flex w-[calc(100%-1rem)] max-w-sm -translate-x-1/2 items-center justify-center gap-2 rounded-xl border border-primary/50 bg-primary px-4 py-3 text-center text-sm font-bold text-primary-foreground shadow-lg"
-              role="alert"
-              aria-live="polite"
-            >
-              <Trophy size={17} />
-              <span>
-                {winner === 'draw'
-                  ? 'It is a draw!'
-                  : winner === playerMark
-                    ? 'You win the round!'
-                    : 'The computer wins the round.'}
-              </span>
-            </div>
-          )}
-          <div
-            className="grid aspect-square min-h-0 grid-cols-3 grid-rows-3 gap-2 rounded-2xl border-4 border-foreground bg-foreground p-2 shadow-lg"
-            role="grid"
-            aria-label={`Tic-Tac-Toe board. ${status}`}
-          >
-            {board.map((cell, index) => (
-              <button
-                key={index}
-                type="button"
-                role="gridcell"
-                onClick={() => playMove(index)}
-                disabled={Boolean(cell) || Boolean(winner) || isAiTurn}
-                className={`flex min-h-0 items-center justify-center overflow-hidden rounded-xl bg-card text-6xl font-black leading-none transition-colors sm:text-8xl ${winningLine.includes(index) ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'} disabled:cursor-default`}
-                aria-label={
-                  cell
-                    ? `Cell ${index + 1}: ${cell}`
-                    : `Cell ${index + 1}: empty`
-                }
-              >
-                {cell && (
-                  <span
-                    className={
-                      cell === 'X' ? 'text-primary' : 'text-destructive'
-                    }
-                  >
-                    {cell}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <span className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground">
-            <Bot size={17} />
-            {status}
-          </span>
           <button
             type="button"
             onClick={() => newRound()}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
+            className="col-span-2 inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary lg:col-span-1"
           >
             <RotateCcw size={17} />
             New round
           </button>
-        </div>
-        <p className="mt-5 text-center text-xs text-muted-foreground">
-          Choose your mark, then click an empty square to play.
-        </p>
+          <span className="col-span-2 hidden items-center gap-2 text-xs font-semibold text-muted-foreground lg:inline-flex">
+            <Bot size={15} />
+            {status}
+          </span>
+        </aside>
       </div>
     </section>
   )

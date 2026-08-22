@@ -364,95 +364,109 @@ export function BreakoutGame() {
             : 'Ready to play'
 
   return (
-    <section className="rise-in overflow-hidden rounded-[2rem] border border-border bg-card p-5 shadow-xl sm:p-8">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="mb-2 text-[0.69rem] font-bold uppercase tracking-[0.16em] text-primary-foreground">
-            Classic arcade
-          </p>
-          <h1 className="display-title m-0 text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-            Breakout
-          </h1>
-          <p className="mt-2 mb-0 text-sm text-muted-foreground">
-            Keep the ball alive, crack every brick, and chase the high score.
+    <section className="rise-in w-full">
+      <div className="grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-10">
+        <div className="mx-auto w-full max-w-180">
+          <div className="relative overflow-hidden rounded-2xl border-4 border-foreground bg-background shadow-lg">
+            <canvas
+              ref={canvasRef}
+              className="block h-auto w-full touch-none"
+              onPointerDown={(event) => {
+                pointerActiveRef.current = true
+                event.currentTarget.setPointerCapture(event.pointerId)
+                movePaddleToPointer(event.clientX)
+              }}
+              onPointerMove={(event) => {
+                if (event.pointerType === 'mouse' || pointerActiveRef.current)
+                  movePaddleToPointer(event.clientX)
+              }}
+              onPointerUp={(event) => {
+                pointerActiveRef.current = false
+                event.currentTarget.releasePointerCapture(event.pointerId)
+              }}
+              onPointerCancel={() => {
+                pointerActiveRef.current = false
+              }}
+              aria-label={`Breakout game. ${statusLabel}. Use left and right arrow keys or A and D to move the paddle.`}
+            />
+            {status !== 'playing' && (
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                <div className="rounded-2xl border border-border/50 bg-foreground px-6 py-4 text-center text-background shadow-xl">
+                  <strong className="block text-lg">
+                    {status === 'won'
+                      ? 'Every brick is down.'
+                      : status === 'lost'
+                        ? 'The ball got away.'
+                        : status === 'paused'
+                          ? 'Take a breath.'
+                          : 'Ready when you are.'}
+                  </strong>
+                  <span className="text-xs text-white/75">
+                    {status === 'won' || status === 'lost'
+                      ? `You scored ${score}.`
+                      : 'Press start, space, or enter.'}
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            className="mx-auto mt-6 flex w-52 items-center justify-between gap-3 sm:hidden"
+            aria-label="Paddle controls"
+          >
+            <button
+              type="button"
+              onClick={() => movePaddle(-55)}
+              className="rounded-xl border border-border bg-card px-7 py-3 text-xl text-card-foreground"
+              aria-label="Move paddle left"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => movePaddle(55)}
+              className="rounded-xl border border-border bg-card px-7 py-3 text-xl text-card-foreground"
+              aria-label="Move paddle right"
+            >
+              →
+            </button>
+          </div>
+          <p className="mt-5 text-center text-xs text-muted-foreground">
+            Move with your mouse or finger · Arrow keys or A/D · Space to pause
           </p>
         </div>
-        <div className="flex gap-2" aria-label="Game statistics">
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+
+        <aside
+          className="grid grid-cols-2 gap-3 lg:grid-cols-1"
+          aria-label="Game controls"
+        >
+          <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Score
             </span>
-            <strong className="text-xl text-card-foreground">{score}</strong>
+            <strong className="text-3xl text-card-foreground">{score}</strong>
           </div>
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+          <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Best
             </span>
-            <strong className="flex items-center gap-1 text-xl text-card-foreground">
-              <Trophy size={15} />
+            <strong className="flex items-center gap-1 text-2xl text-card-foreground">
+              <Trophy size={17} />
               {bestScore}
             </strong>
           </div>
-          <div className="rounded-xl border border-border bg-card px-4 py-2">
+          <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
               Lives
             </span>
-            <strong className="text-xl text-card-foreground">{lives}</strong>
+            <strong className="text-2xl text-card-foreground">{lives}</strong>
           </div>
-        </div>
-      </div>
-
-      <div className="mx-auto max-w-180">
-        <div className="relative overflow-hidden rounded-2xl border-4 border-foreground bg-background shadow-lg">
-          <canvas
-            ref={canvasRef}
-            className="block h-auto w-full touch-none"
-            onPointerDown={(event) => {
-              pointerActiveRef.current = true
-              event.currentTarget.setPointerCapture(event.pointerId)
-              movePaddleToPointer(event.clientX)
-            }}
-            onPointerMove={(event) => {
-              if (event.pointerType === 'mouse' || pointerActiveRef.current)
-                movePaddleToPointer(event.clientX)
-            }}
-            onPointerUp={(event) => {
-              pointerActiveRef.current = false
-              event.currentTarget.releasePointerCapture(event.pointerId)
-            }}
-            onPointerCancel={() => {
-              pointerActiveRef.current = false
-            }}
-            aria-label={`Breakout game. ${statusLabel}. Use left and right arrow keys or A and D to move the paddle.`}
-          />
-          {status !== 'playing' && (
-            <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-              <div className="rounded-2xl border border-border/50 bg-foreground px-6 py-4 text-center text-background shadow-xl">
-                <strong className="block text-lg">
-                  {status === 'won'
-                    ? 'Every brick is down.'
-                    : status === 'lost'
-                      ? 'The ball got away.'
-                      : status === 'paused'
-                        ? 'Take a breath.'
-                        : 'Ready when you are.'}
-                </strong>
-                <span className="text-xs text-white/75">
-                  {status === 'won' || status === 'lost'
-                    ? `You scored ${score}.`
-                    : 'Press start, space, or enter.'}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-5 flex flex-wrap items-center justify-between gap-3">
-          <div className="flex gap-2">
+          <div className="col-span-2 flex gap-2 lg:col-span-1 lg:flex-col">
             <button
               type="button"
               onClick={startGame}
-              className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
+              className="inline-flex flex-1 items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
             >
               {status === 'won' || status === 'lost' ? (
                 <RotateCcw size={17} />
@@ -473,41 +487,16 @@ export function BreakoutGame() {
                 setStatus(game.status)
               }}
               disabled={status === 'won' || status === 'lost'}
-              className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex flex-1 items-center justify-center gap-2 border border-border px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {status === 'playing' ? <Pause size={17} /> : <Play size={17} />}
               {status === 'playing' ? 'Pause' : 'Resume'}
             </button>
           </div>
-          <span className="text-xs font-semibold text-muted-foreground">
+          <span className="col-span-2 text-xs font-semibold text-muted-foreground lg:col-span-1">
             {statusLabel}
           </span>
-        </div>
-
-        <div
-          className="mx-auto mt-6 flex w-52 items-center justify-between gap-3 sm:hidden"
-          aria-label="Paddle controls"
-        >
-          <button
-            type="button"
-            onClick={() => movePaddle(-55)}
-            className="rounded-xl border border-border bg-card px-7 py-3 text-xl text-card-foreground"
-            aria-label="Move paddle left"
-          >
-            ←
-          </button>
-          <button
-            type="button"
-            onClick={() => movePaddle(55)}
-            className="rounded-xl border border-border bg-card px-7 py-3 text-xl text-card-foreground"
-            aria-label="Move paddle right"
-          >
-            →
-          </button>
-        </div>
-        <p className="mt-5 text-center text-xs text-muted-foreground">
-          Move with your mouse or finger · Arrow keys or A/D · Space to pause
-        </p>
+        </aside>
       </div>
     </section>
   )

@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 
 import type { GameType } from '#/games/types'
 import { RenderGame } from '#/games/renderer'
-import { SnakeGame } from '#/games/snake'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
 import { useCalendarState } from '#/hooks/use-calendar-state'
 import windowContent from '#/data/window-content.json'
@@ -44,6 +43,9 @@ function WindowPage() {
   if (!content) {
     return null
   }
+
+  const gameTitle = content['game-name']
+  const gameDescription = content['game-description']
 
   return (
     <div>
@@ -97,7 +99,23 @@ function WindowPage() {
             aria-label={`Spillområde for dag ${day}`}
             className="mt-6 flex min-h-104 items-center justify-center border-2 border-dashed border-border bg-card/60 p-6 shadow-xl backdrop-blur-sm md:min-h-[34rem] md:p-10"
           >
-            {content.game ? (
+            {content.game && (gameTitle || gameDescription) ? (
+              <div className="w-full">
+                <div className="mb-6 border-b border-border/70 pb-5">
+                  {gameTitle ? (
+                    <h2 className="text-2xl font-bold text-card-foreground md:text-3xl">
+                      {gameTitle}
+                    </h2>
+                  ) : null}
+                  {gameDescription ? (
+                    <p className="mt-2 max-w-3xl text-sm leading-relaxed text-muted-foreground md:text-base">
+                      {gameDescription}
+                    </p>
+                  ) : null}
+                </div>
+                <RenderGame game={content.game as GameType} />
+              </div>
+            ) : content.game ? (
               <RenderGame game={content.game as GameType} />
             ) : null}
           </section>
