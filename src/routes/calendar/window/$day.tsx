@@ -18,7 +18,7 @@ function WindowPage() {
   const day = Number(dayParam)
   const [isVisible, setIsVisible] = useState(false)
 
-  const { isUnlocked, isOpened, isLoading } = useCalendarState() // Ensure calendar state is loaded before rendering the window content.
+  const { isUnlocked, isOpened, isLoading, markPlayed } = useCalendarState() // Ensure calendar state is loaded before rendering the window content.
   const content = windowContent.windows.find((w) => w.day === day)
 
   useEffect(() => {
@@ -113,10 +113,20 @@ function WindowPage() {
                     </p>
                   ) : null}
                 </div>
-                <RenderGame game={content.game as GameType} />
+                <RenderGame
+                  game={content.game as GameType}
+                  onInteraction={() => {
+                    void markPlayed(day)
+                  }}
+                />
               </div>
             ) : content.game ? (
-              <RenderGame game={content.game as GameType} />
+              <RenderGame
+                game={content.game as GameType}
+                onInteraction={() => {
+                  void markPlayed(day)
+                }}
+              />
             ) : null}
           </section>
 

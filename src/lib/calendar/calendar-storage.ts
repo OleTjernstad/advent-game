@@ -2,6 +2,7 @@ export interface CalendarState {
   openedWindows: {
     day: number
     openedAt: string // ISO date string
+    gamePlayed?: boolean
   }[]
   createdAt: string
 }
@@ -31,6 +32,20 @@ export function setEncryptedCalendarState(encryptedData: string): void {
 
 export function isWindowOpened(day: number, state: CalendarState): boolean {
   return state.openedWindows.some((w) => w.day === day)
+}
+export function isGamePlayed(day: number, state: CalendarState): boolean {
+  const window = state.openedWindows.find((w) => w.day === day)
+  return window?.gamePlayed ?? false
+}
+
+export function markGamePlayed(
+  day: number,
+  state: CalendarState,
+): CalendarState {
+  const updatedWindows = state.openedWindows.map((w) =>
+    w.day === day ? { ...w, gamePlayed: true } : w,
+  )
+  return { ...state, openedWindows: updatedWindows }
 }
 
 export function getLastOpenedWindow(
@@ -64,6 +79,12 @@ export function isWindowUnlocked(
   const previousWindowOpened = isWindowOpened(previousDay, state)
 
   if (!previousWindowOpened) {
+    return false
+  }
+
+  // Require the previous day's game to be played before unlocking.
+  const previousDayPlayed = isGamePlayed(previousDay, state)
+  if (!previousDayPlayed) {
     return false
   }
 

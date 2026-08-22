@@ -1,5 +1,3 @@
-import { createServerFn } from '@tanstack/react-start'
-
 import {
   coordsForCompletedState,
   decryptCalendarState,
@@ -7,11 +5,14 @@ import {
 } from './calendar-crypto.server'
 import {
   initializeCalendarState,
+  isGamePlayed,
   isWindowOpened,
   isWindowUnlocked,
+  markGamePlayed,
 } from './calendar-storage'
 
 import type { CalendarState } from './calendar-storage'
+import { createServerFn } from '@tanstack/react-start'
 
 /** Lets the client detect a manipulated device clock; never trust it for unlock decisions. */
 export const getServerTimeFn = createServerFn({ method: 'GET' }).handler(
@@ -76,6 +77,41 @@ export const openCalendarWindowFn = createServerFn({ method: 'POST' })
       ].sort((a, b) => a.day - b.day),
     }
 
+    const encryptedData = await encryptCalendarState(newState)
+    return { success: true as const, encryptedData, state: newState }
+  })
+
+/**
+ * Marks the game for an already-opened day as played.
+ */
+export const markGamePlayedFn = createServerFn({ method: 'POST' })
+  .validator((data: { encryptedData: string | null; day: number }) => data)
+  .handler(async ({ data }) => {
+    const serverNow = new Date()
+
+    let state = data.encryptedData
+      ? await decryptCalendarState(data.encryptedData)
+      : null
+    if (!state) {
+      state = initializeCalendarState(serverNow)
+    }
+
+    if (!isWindowOpened(data.day, state)) {
+      const encryptedData = await encryptCalendarState(state)
+      return {
+        success: false as const,
+        encryptedData,
+        state,
+        error: 'Denne luken er ikke åpnet ennå.',
+      }
+    }
+
+    if (isGamePlayed(data.day, state)) {
+      const encryptedData = await encryptCalendarState(state)
+      return { success: true as const, encryptedData, state }
+    }
+
+    const newState = markGamePlayed(data.day, state)
     const encryptedData = await encryptCalendarState(newState)
     return { success: true as const, encryptedData, state: newState }
   })

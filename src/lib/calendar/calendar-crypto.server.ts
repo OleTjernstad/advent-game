@@ -1,8 +1,8 @@
+import type { CalendarState } from './calendar-storage'
 import { env } from '#/env'
 
-import type { CalendarState } from './calendar-storage'
-
-const ENCRYPTION_KEY = env.CALENDAR_ENCRYPTION_KEY || 'advent-calendar-2024-secure'
+const ENCRYPTION_KEY =
+  env.CALENDAR_ENCRYPTION_KEY || 'advent-calendar-2024-secure'
 const ENCRYPTION_SALT = env.CALENDAR_ENCRYPTION_SALT || 'advent-salt-2024'
 
 async function deriveKey(usage: 'encrypt' | 'decrypt') {
@@ -85,6 +85,8 @@ export async function decryptCalendarState(
       console.error('[calendar] Invalid calendar state structure')
       return null
     }
+
+    console.log('[calendar] Decrypted calendar state:', state)
 
     return state
   } catch (error) {

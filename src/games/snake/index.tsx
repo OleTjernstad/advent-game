@@ -10,6 +10,9 @@ import {
 } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
+import type { GameProps } from '../types'
+import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
+
 const BOARD_SIZE = 20
 const TICK_RATE = 125
 
@@ -56,7 +59,7 @@ function createFood(snake: Point[]): Point {
   )
 }
 
-export function SnakeGame() {
+export function SnakeGame({ onInteraction }: GameProps) {
   const [snake, setSnake] = useState<Point[]>(STARTING_SNAKE)
   const [food, setFood] = useState<Point>(() => createFood(STARTING_SNAKE))
   const [direction, setDirection] = useState<Direction>('right')
@@ -65,6 +68,8 @@ export function SnakeGame() {
   const [isRunning, setIsRunning] = useState(false)
   const [isGameOver, setIsGameOver] = useState(false)
   const directionRef = useRef<Direction>('right')
+  const moveCountRef = useRef(0)
+  const interactionReportedRef = useRef(false)
 
   useEffect(() => {
     const savedBestScore = window.localStorage.getItem('snake-best-score')
@@ -99,6 +104,9 @@ export function SnakeGame() {
         event.preventDefault()
         directionRef.current = nextDirection
         setDirection(nextDirection)
+
+        reportInteraction()
+
         setIsRunning(true)
       }
 
@@ -111,6 +119,17 @@ export function SnakeGame() {
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isGameOver])
+
+  function reportInteraction() {
+    moveCountRef.current += 1
+    if (
+      !interactionReportedRef.current &&
+      moveCountRef.current >= MOVES_REQUIRED_FOR_INTERACTION
+    ) {
+      interactionReportedRef.current = true
+      onInteraction?.()
+    }
+  }
 
   useEffect(() => {
     if (!isRunning || isGameOver) return
@@ -160,11 +179,14 @@ export function SnakeGame() {
     setIsRunning(true)
     directionRef.current = 'right'
     setDirection('right')
+    moveCountRef.current = 0
+    interactionReportedRef.current = false
   }
 
   function changeDirection(nextDirection: Direction) {
     if (nextDirection === OPPOSITE[directionRef.current]) return
     directionRef.current = nextDirection
+    reportInteraction()
     setDirection(nextDirection)
     if (!isGameOver) setIsRunning(true)
   }

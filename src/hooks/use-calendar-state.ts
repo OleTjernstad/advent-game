@@ -1,6 +1,7 @@
 import {
   ensureCalendarStateFn,
   getServerTimeFn,
+  markGamePlayedFn,
   openCalendarWindowFn,
 } from '#/lib/calendar/calendar.functions'
 import {
@@ -27,6 +28,7 @@ export function useCalendarState() {
 
   const ensureCalendarState = useServerFn(ensureCalendarStateFn)
   const openCalendarWindow = useServerFn(openCalendarWindowFn)
+  const markGamePlayed = useServerFn(markGamePlayedFn)
   const getServerTime = useServerFn(getServerTimeFn)
 
   // Server-corrected "now" - never the raw, possibly-manipulated device clock.
@@ -81,6 +83,20 @@ export function useCalendarState() {
     return result.success
   }
 
+  const markPlayed = async (day: number): Promise<boolean> => {
+    const encryptedData = getEncryptedCalendarState()
+    const result = await markGamePlayed({ data: { encryptedData, day } })
+
+    setEncryptedCalendarState(result.encryptedData)
+    setState(result.state)
+
+    if (!result.success) {
+      console.warn('[calendar]', result.error)
+    }
+
+    return result.success
+  }
+
   const isOpened = (day: number): boolean => {
     if (!state) return false
     return isWindowOpened(day, state)
@@ -95,6 +111,7 @@ export function useCalendarState() {
     state,
     isLoading,
     openWindow,
+    markPlayed,
     isOpened,
     isUnlocked,
     timeUntilUnlock,

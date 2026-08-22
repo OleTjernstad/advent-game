@@ -5,16 +5,18 @@ import { SnakeGame } from './snake'
 import { TicTacToeGame } from './tic-tac-toe'
 
 const gameComponents = {
-  snakeGame: () => <SnakeGame />,
+  snakeGame: (onInteraction?: () => void) => (
+    <SnakeGame onInteraction={onInteraction} />
+  ),
   breakout: () => <BreakoutGame />,
   tictactoe: () => <TicTacToeGame />,
 }
 
-function renderBlock(game: GameType): ReactNode {
+function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
   switch (game) {
     case 'snakeGame': {
       const Block = gameComponents.snakeGame
-      return <Block />
+      return Block(onInteraction)
     }
 
     case 'breakout': {
@@ -34,8 +36,9 @@ function renderBlock(game: GameType): ReactNode {
 
 interface RenderGameProps {
   game: GameType
+  onInteraction?: () => void
 }
 
-export function RenderGame({ game }: RenderGameProps) {
-  return renderBlock(game)
+export function RenderGame({ game, onInteraction }: RenderGameProps) {
+  return renderBlock(game, onInteraction)
 }

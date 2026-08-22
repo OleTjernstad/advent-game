@@ -1,6 +1,9 @@
 import { Pause, Play, RotateCcw, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
+import type { GameProps } from '../types'
+import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
+
 const CANVAS_WIDTH = 720
 const CANVAS_HEIGHT = 480
 const PADDLE_WIDTH = 112
@@ -137,7 +140,7 @@ function drawGame(context: CanvasRenderingContext2D, game: GameState) {
   }
 }
 
-export function BreakoutGame() {
+export function BreakoutGame({ onInteraction }: GameProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const gameRef = useRef<GameState | null>(null)
   const frameRef = useRef<number | null>(null)
@@ -148,6 +151,9 @@ export function BreakoutGame() {
   const [bestScore, setBestScore] = useState(0)
   const [lives, setLives] = useState(STARTING_LIVES)
   const [status, setStatus] = useState<GameStatus>('ready')
+
+  const moveCountRef = useRef(0)
+  const interactionReportedRef = useRef(false)
 
   function syncGame(nextGame: GameState) {
     gameRef.current = nextGame
@@ -328,6 +334,7 @@ export function BreakoutGame() {
       0,
       Math.min(CANVAS_WIDTH - PADDLE_WIDTH, game.paddleX + amount),
     )
+    reportInteraction()
   }
 
   function movePaddleToPointer(clientX: number) {
@@ -340,6 +347,18 @@ export function BreakoutGame() {
       0,
       Math.min(CANVAS_WIDTH - PADDLE_WIDTH, canvasX - PADDLE_WIDTH / 2),
     )
+  }
+
+  function reportInteraction() {
+    console.log('moveCountRef.current', moveCountRef.current)
+    moveCountRef.current += 1
+    if (
+      !interactionReportedRef.current &&
+      moveCountRef.current >= MOVES_REQUIRED_FOR_INTERACTION
+    ) {
+      interactionReportedRef.current = true
+      onInteraction?.()
+    }
   }
 
   function startGame() {
