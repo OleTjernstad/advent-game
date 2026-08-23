@@ -27,7 +27,10 @@
     {
       "day": 4,
       "title": "Gløgg og gode venner ☕",
-      "text": "Kiko58 har invitert gjengen på førjulskveld. På bordet står gløgg, rosiner og mandler, og fatet bugner av smultringer og goro. De prater om årets små og store gleder, og noen begynner å mimre om gamle turer – både til fjells og til skjulte steder i skogen. Advent handler om samvær – og om å senke skuldrene."
+      "text": "Kiko58 har invitert gjengen på førjulskveld. På bordet står gløgg, rosiner og mandler, og fatet bugner av smultringer og goro. De prater om årets små og store gleder, og noen begynner å mimre om gamle turer – både til fjells og til skjulte steder i skogen. Advent handler om samvær – og om å senke skuldrene.",
+      "game": "hangman",
+      "game-name": "Hangman",
+      "game-description": "Guess the hidden winter word before the figure is complete."
     },
     {
       "day": 5,

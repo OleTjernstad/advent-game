@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as BreakoutRouteImport } from './routes/breakout'
+import { Route as HangmanRouteImport } from './routes/hangman'
 import { Route as SnakeRouteImport } from './routes/snake'
 import { Route as TicTacToeRouteImport } from './routes/tic-tac-toe'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
@@ -30,6 +31,11 @@ const AboutRoute = AboutRouteImport.update({
 const BreakoutRoute = BreakoutRouteImport.update({
   id: '/breakout',
   path: '/breakout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HangmanRoute = HangmanRouteImport.update({
+  id: '/hangman',
+  path: '/hangman',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SnakeRoute = SnakeRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/breakout': typeof BreakoutRoute
+  '/hangman': typeof HangmanRoute
   '/snake': typeof SnakeRoute
   '/tic-tac-toe': typeof TicTacToeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -66,6 +73,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/breakout': typeof BreakoutRoute
+  '/hangman': typeof HangmanRoute
   '/snake': typeof SnakeRoute
   '/tic-tac-toe': typeof TicTacToeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -76,6 +84,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/breakout': typeof BreakoutRoute
+  '/hangman': typeof HangmanRoute
   '/snake': typeof SnakeRoute
   '/tic-tac-toe': typeof TicTacToeRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
@@ -87,6 +96,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/breakout'
+    | '/hangman'
     | '/snake'
     | '/tic-tac-toe'
     | '/demo/tanstack-query'
@@ -96,6 +106,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/breakout'
+    | '/hangman'
     | '/snake'
     | '/tic-tac-toe'
     | '/demo/tanstack-query'
@@ -105,6 +116,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/breakout'
+    | '/hangman'
     | '/snake'
     | '/tic-tac-toe'
     | '/demo/tanstack-query'
@@ -115,6 +127,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   BreakoutRoute: typeof BreakoutRoute
+  HangmanRoute: typeof HangmanRoute
   SnakeRoute: typeof SnakeRoute
   TicTacToeRoute: typeof TicTacToeRoute
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
@@ -142,6 +155,13 @@ declare module '@tanstack/react-router' {
       path: '/breakout'
       fullPath: '/breakout'
       preLoaderRoute: typeof BreakoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hangman': {
+      id: '/hangman'
+      path: '/hangman'
+      fullPath: '/hangman'
+      preLoaderRoute: typeof HangmanRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/snake': {
@@ -179,6 +199,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BreakoutRoute: BreakoutRoute,
+  HangmanRoute: HangmanRoute,
   SnakeRoute: SnakeRoute,
   TicTacToeRoute: TicTacToeRoute,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,

@@ -1,4 +1,4 @@
-export type GameType = 'snakeGame' | 'breakout' | 'tictactoe'
+export type GameType = 'snakeGame' | 'breakout' | 'tictactoe' | 'hangman'
 
 export interface GameProps {
   onInteraction?: () => void

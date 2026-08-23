@@ -1,4 +1,5 @@
 import { BreakoutGame } from './breakout'
+import { HangmanGame } from './hangman'
 import type { GameType } from './types'
 import type { ReactNode } from 'react'
 import { SnakeGame } from './snake'
@@ -10,6 +11,9 @@ const gameComponents = {
   ),
   breakout: () => <BreakoutGame />,
   tictactoe: () => <TicTacToeGame />,
+  hangman: (onInteraction?: () => void) => (
+    <HangmanGame onInteraction={onInteraction} />
+  ),
 }
 
 function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
@@ -27,6 +31,11 @@ function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
     case 'tictactoe': {
       const Block = gameComponents.tictactoe
       return <Block />
+    }
+
+    case 'hangman': {
+      const Block = gameComponents.hangman
+      return Block(onInteraction)
     }
 
     default:
