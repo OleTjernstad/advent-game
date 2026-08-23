@@ -10,12 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AboutRouteImport } from './routes/about'
-import { Route as BreakoutRouteImport } from './routes/breakout'
-import { Route as HangmanRouteImport } from './routes/hangman'
-import { Route as SnakeRouteImport } from './routes/snake'
-import { Route as TicTacToeRouteImport } from './routes/tic-tac-toe'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
+import { Route as GameGameRouteImport } from './routes/game/$game'
 import { Route as CalendarWindowDayRouteImport } from './routes/calendar/window/$day'
 
 const IndexRoute = IndexRouteImport.update({
@@ -23,34 +18,9 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BreakoutRoute = BreakoutRouteImport.update({
-  id: '/breakout',
-  path: '/breakout',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HangmanRoute = HangmanRouteImport.update({
-  id: '/hangman',
-  path: '/hangman',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SnakeRoute = SnakeRouteImport.update({
-  id: '/snake',
-  path: '/snake',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TicTacToeRoute = TicTacToeRouteImport.update({
-  id: '/tic-tac-toe',
-  path: '/tic-tac-toe',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
+const GameGameRoute = GameGameRouteImport.update({
+  id: '/game/$game',
+  path: '/game/$game',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarWindowDayRoute = CalendarWindowDayRouteImport.update({
@@ -61,76 +31,31 @@ const CalendarWindowDayRoute = CalendarWindowDayRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/breakout': typeof BreakoutRoute
-  '/hangman': typeof HangmanRoute
-  '/snake': typeof SnakeRoute
-  '/tic-tac-toe': typeof TicTacToeRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/game/$game': typeof GameGameRoute
   '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/breakout': typeof BreakoutRoute
-  '/hangman': typeof HangmanRoute
-  '/snake': typeof SnakeRoute
-  '/tic-tac-toe': typeof TicTacToeRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/game/$game': typeof GameGameRoute
   '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
-  '/breakout': typeof BreakoutRoute
-  '/hangman': typeof HangmanRoute
-  '/snake': typeof SnakeRoute
-  '/tic-tac-toe': typeof TicTacToeRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
+  '/game/$game': typeof GameGameRoute
   '/calendar/window/$day': typeof CalendarWindowDayRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/about'
-    | '/breakout'
-    | '/hangman'
-    | '/snake'
-    | '/tic-tac-toe'
-    | '/demo/tanstack-query'
-    | '/calendar/window/$day'
+  fullPaths: '/' | '/game/$game' | '/calendar/window/$day'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/about'
-    | '/breakout'
-    | '/hangman'
-    | '/snake'
-    | '/tic-tac-toe'
-    | '/demo/tanstack-query'
-    | '/calendar/window/$day'
-  id:
-    | '__root__'
-    | '/'
-    | '/about'
-    | '/breakout'
-    | '/hangman'
-    | '/snake'
-    | '/tic-tac-toe'
-    | '/demo/tanstack-query'
-    | '/calendar/window/$day'
+  to: '/' | '/game/$game' | '/calendar/window/$day'
+  id: '__root__' | '/' | '/game/$game' | '/calendar/window/$day'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
-  BreakoutRoute: typeof BreakoutRoute
-  HangmanRoute: typeof HangmanRoute
-  SnakeRoute: typeof SnakeRoute
-  TicTacToeRoute: typeof TicTacToeRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
+  GameGameRoute: typeof GameGameRoute
   CalendarWindowDayRoute: typeof CalendarWindowDayRoute
 }
 
@@ -143,46 +68,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/breakout': {
-      id: '/breakout'
-      path: '/breakout'
-      fullPath: '/breakout'
-      preLoaderRoute: typeof BreakoutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/hangman': {
-      id: '/hangman'
-      path: '/hangman'
-      fullPath: '/hangman'
-      preLoaderRoute: typeof HangmanRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/snake': {
-      id: '/snake'
-      path: '/snake'
-      fullPath: '/snake'
-      preLoaderRoute: typeof SnakeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/tic-tac-toe': {
-      id: '/tic-tac-toe'
-      path: '/tic-tac-toe'
-      fullPath: '/tic-tac-toe'
-      preLoaderRoute: typeof TicTacToeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
+    '/game/$game': {
+      id: '/game/$game'
+      path: '/game/$game'
+      fullPath: '/game/$game'
+      preLoaderRoute: typeof GameGameRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar/window/$day': {
@@ -197,12 +87,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
-  BreakoutRoute: BreakoutRoute,
-  HangmanRoute: HangmanRoute,
-  SnakeRoute: SnakeRoute,
-  TicTacToeRoute: TicTacToeRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
+  GameGameRoute: GameGameRoute,
   CalendarWindowDayRoute: CalendarWindowDayRoute,
 }
 export const routeTree = rootRouteImport
