@@ -21,6 +21,10 @@ function randomSpot(previousSpot: number | null) {
 
 export function WhackAMoleGame({ onInteraction }: GameProps) {
   const [activeSpot, setActiveSpot] = useState<number | null>(null)
+  const [hitSpot, setHitSpot] = useState<number | null>(null)
+  const [hitBurstKey, setHitBurstKey] = useState(0)
+  const [missSpot, setMissSpot] = useState<number | null>(null)
+  const [missFlashKey, setMissFlashKey] = useState(0)
   const [status, setStatus] = useState<GameStatus>('idle')
   const [timeLeft, setTimeLeft] = useState(ROUND_SECONDS)
   const [score, setScore] = useState(0)
@@ -29,6 +33,20 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
 
   const clickCountRef = useRef(0)
   const interactionReportedRef = useRef(false)
+  const hitFeedbackTimeoutRef = useRef<number | null>(null)
+  const missFeedbackTimeoutRef = useRef<number | null>(null)
+  const spotRefs = useRef<Array<HTMLButtonElement | null>>([])
+
+  useEffect(() => {
+    return () => {
+      if (hitFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(hitFeedbackTimeoutRef.current)
+      }
+      if (missFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(missFeedbackTimeoutRef.current)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const savedBest = window.localStorage.getItem('whack-a-cache-best-score')
@@ -89,6 +107,10 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
     setMisses(0)
     setTimeLeft(ROUND_SECONDS)
     setActiveSpot(null)
+    setHitSpot(null)
+    setHitBurstKey(0)
+    setMissSpot(null)
+    setMissFlashKey(0)
     setStatus('running')
     clickCountRef.current = 0
     interactionReportedRef.current = false
@@ -102,11 +124,48 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
 
       if (spotIndex === activeSpot) {
         setScore((current) => current + 1)
+        setHitSpot(spotIndex)
+        setHitBurstKey((current) => current + 1)
+
+        if (hitFeedbackTimeoutRef.current !== null) {
+          window.clearTimeout(hitFeedbackTimeoutRef.current)
+        }
+        hitFeedbackTimeoutRef.current = window.setTimeout(() => {
+          setHitSpot(null)
+          hitFeedbackTimeoutRef.current = null
+        }, 320)
+
         setActiveSpot((currentSpot) => randomSpot(currentSpot))
         return
       }
 
       setMisses((current) => current + 1)
+      setMissSpot(spotIndex)
+      setMissFlashKey((current) => current + 1)
+
+      if (missFeedbackTimeoutRef.current !== null) {
+        window.clearTimeout(missFeedbackTimeoutRef.current)
+      }
+      missFeedbackTimeoutRef.current = window.setTimeout(() => {
+        setMissSpot(null)
+        missFeedbackTimeoutRef.current = null
+      }, 220)
+
+      const spotElement = spotRefs.current[spotIndex]
+      spotElement?.animate(
+        [
+          { transform: 'translateX(0px)' },
+          { transform: 'translateX(-3px)' },
+          { transform: 'translateX(3px)' },
+          { transform: 'translateX(-2px)' },
+          { transform: 'translateX(2px)' },
+          { transform: 'translateX(0px)' },
+        ],
+        {
+          duration: 180,
+          easing: 'ease-out',
+        },
+      )
     },
     [activeSpot, status],
   )
@@ -157,13 +216,18 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
           <div className="mx-auto grid w-full max-w-120 grid-cols-3 gap-3 rounded-2xl border-2 border-border bg-muted/30 p-3">
             {Array.from({ length: SPOT_COUNT }, (_, index) => {
               const isActive = activeSpot === index && status === 'running'
+              const isHitSpot = hitSpot === index
+              const isMissSpot = missSpot === index
 
               return (
                 <button
                   key={index}
+                  ref={(element) => {
+                    spotRefs.current[index] = element
+                  }}
                   type="button"
                   onClick={() => onSpotClick(index)}
-                  className={`relative aspect-square rounded-xl border transition-colors ${
+                  className={`relative aspect-square overflow-hidden rounded-xl border transition-colors ${
                     isActive
                       ? 'border-emerald-500/70 bg-emerald-500/15'
                       : 'border-border bg-card hover:bg-accent'
@@ -177,6 +241,30 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
                       <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-400/25 text-emerald-200 shadow-[0_0_0_1px_rgba(0,0,0,0.25)]">
                         <Crosshair className="h-6 w-6" />
                       </span>
+                    </span>
+                  ) : null}
+
+                  {isHitSpot ? (
+                    <span
+                      key={hitBurstKey}
+                      className="pointer-events-none absolute inset-0"
+                    >
+                      <span className="absolute inset-3 animate-ping rounded-full border-2 border-amber-300/90" />
+                      <span className="absolute inset-0 flex items-center justify-center">
+                        <span className="rounded-full border border-amber-200/70 bg-amber-400/85 px-2 py-0.5 text-[0.62rem] font-black uppercase tracking-[0.08em] text-amber-950 shadow-md animate-bounce">
+                          +1 cache
+                        </span>
+                      </span>
+                    </span>
+                  ) : null}
+
+                  {isMissSpot ? (
+                    <span
+                      key={missFlashKey}
+                      className="pointer-events-none absolute inset-0"
+                    >
+                      <span className="absolute inset-0 rounded-xl bg-red-500/18" />
+                      <span className="absolute inset-2 rounded-lg border border-red-300/70 animate-pulse" />
                     </span>
                   ) : null}
                 </button>
