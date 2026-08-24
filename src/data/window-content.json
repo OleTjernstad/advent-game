@@ -51,7 +51,10 @@
     {
       "day": 7,
       "title": "Smør, sukker og latter 🧈",
-      "text": "Olet og Kiko58 møtes til bakekveld. I kveld står sandkaker på planen – laget av smør, sukker, hvetemel og litt potetmel. De trykker deigen forsiktig ut i små former og passer nøye på steketiden. Kjøkkenet fylles av latter og duft, og snart er det gyldne små skall fylt med søte minner."
+      "text": "Olet og Kiko58 møtes til bakekveld. I kveld står sandkaker på planen – laget av smør, sukker, hvetemel og litt potetmel. De trykker deigen forsiktig ut i små former og passer nøye på steketiden. Kjøkkenet fylles av latter og duft, og snart er det gyldne små skall fylt med søte minner.",
+      "game": "game2048",
+      "game-name": "2048",
+      "game-description": "Slide tiles together to combine matching numbers and reach 2048."
     },
     {
       "day": 8,

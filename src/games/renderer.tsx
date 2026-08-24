@@ -1,4 +1,5 @@
 import { BreakoutGame } from './breakout'
+import { Game2048 } from './game2048'
 import { HangmanGame } from './hangman'
 import { MinesweeperGame } from './minesweeper'
 import type { GameType } from './types'
@@ -21,6 +22,9 @@ const gameComponents = {
   ),
   minesweeper: (onInteraction?: () => void) => (
     <MinesweeperGame onInteraction={onInteraction} />
+  ),
+  game2048: (onInteraction?: () => void) => (
+    <Game2048 onInteraction={onInteraction} />
   ),
 }
 
@@ -53,6 +57,11 @@ function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
 
     case 'minesweeper': {
       const Block = gameComponents.minesweeper
+      return Block(onInteraction)
+    }
+
+    case 'game2048': {
+      const Block = gameComponents.game2048
       return Block(onInteraction)
     }
 
