@@ -8,6 +8,7 @@ export type GameType =
   | 'game2048'
   | 'maze'
   | 'memory'
+  | 'whackamole'
 
 export interface GameProps {
   onInteraction?: () => void
