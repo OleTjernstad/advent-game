@@ -112,7 +112,7 @@ function isEditableTarget(target: EventTarget | null) {
 }
 
 export function MazeGame({ onInteraction }: GameProps) {
-  const [maze, setMaze] = useState<number[][]>(() => buildMaze())
+  const [maze, setMaze] = useState<number[][]>(() => createEmptyMaze())
   const [player, setPlayer] = useState<Point>({ ...START })
   const [visitedCells, setVisitedCells] = useState<Set<string>>(
     () => new Set([`${START.x}:${START.y}`]),
@@ -122,6 +122,10 @@ export function MazeGame({ onInteraction }: GameProps) {
 
   const moveCountRef = useRef(0)
   const interactionReportedRef = useRef(false)
+
+  useEffect(() => {
+    setMaze(buildMaze())
+  }, [])
 
   function reportInteraction() {
     moveCountRef.current += 1
@@ -215,7 +219,7 @@ export function MazeGame({ onInteraction }: GameProps) {
           <div
             role="grid"
             aria-label="Maze board. Reach the green goal tile. Use arrow keys or WASD to move."
-            className="mx-auto grid w-full max-w-120 gap-0.5 rounded-2xl border-4 border-foreground bg-foreground p-1 shadow-lg"
+            className="mx-auto grid w-full max-w-120 gap-0 rounded-2xl border border-slate-700 bg-slate-800 p-1 shadow-lg"
             style={{
               gridTemplateColumns: `repeat(${MAZE_WIDTH}, minmax(0, 1fr))`,
             }}
@@ -236,12 +240,22 @@ export function MazeGame({ onInteraction }: GameProps) {
                     isWall
                       ? 'bg-slate-900 dark:bg-slate-950'
                       : 'bg-slate-200 dark:bg-slate-700'
-                  } ${isGoal ? 'bg-emerald-500 dark:bg-emerald-400' : ''} ${
-                    isPlayer
-                      ? 'bg-amber-400 ring-2 ring-amber-100/80 dark:bg-amber-500'
-                      : ''
+                  } ${isGoal ? 'bg-emerald-600 dark:bg-emerald-500' : ''} ${
+                    isPlayer ? 'bg-amber-400 dark:bg-amber-500' : ''
                   }`}
                 >
+                  {isGoal && !isPlayer ? (
+                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                      <span className="h-3.5 w-3.5 rounded-sm border border-emerald-100/80 bg-emerald-300/90 shadow-[0_0_0_1px_rgba(0,0,0,0.25)]" />
+                    </span>
+                  ) : null}
+
+                  {isPlayer ? (
+                    <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                      <span className="h-3.5 w-3.5 rounded-full border border-amber-100/90 bg-amber-100 shadow-[0_0_0_1px_rgba(0,0,0,0.35)]" />
+                    </span>
+                  ) : null}
+
                   {!isWall && isVisited && !isPlayer && !isGoal ? (
                     <span className="pointer-events-none absolute inset-0 flex items-center justify-center">
                       <span className="h-1.5 w-1.5 rounded-full bg-indigo-500/90 dark:bg-indigo-300/90" />

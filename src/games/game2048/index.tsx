@@ -141,7 +141,9 @@ function canMove(board: number[]) {
 }
 
 export function Game2048({ onInteraction }: GameProps) {
-  const [board, setBoard] = useState<number[]>(() => createStartingBoard())
+  const [board, setBoard] = useState<number[]>(() =>
+    Array.from({ length: SIZE * SIZE }, () => 0),
+  )
   const [score, setScore] = useState(0)
   const [bestScore, setBestScore] = useState(0)
   const [outcome, setOutcome] = useState<Outcome>('playing')
@@ -151,6 +153,8 @@ export function Game2048({ onInteraction }: GameProps) {
   const touchStartRef = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => {
+    setBoard(createStartingBoard())
+
     const savedBestScore = window.localStorage.getItem('2048-best-score')
     if (savedBestScore) setBestScore(Number(savedBestScore))
   }, [])
