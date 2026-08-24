@@ -35,7 +35,10 @@
     {
       "day": 5,
       "title": "Snø i lufta ❄️",
-      "text": "Pe-Hi kikker ut vinduet – de første snøfnuggene daler ned. Hun bestemmer seg for å lage berlinerkranser. Deigen – med kokt eggeplomme, melis og smør – formes forsiktig og dyppes i perlesukker før steking. Mens kakene kjøles på rist, henger hun opp julelys ute. Små stjerner i mørket, både på himmelen og i hagen."
+      "text": "Pe-Hi kikker ut vinduet – de første snøfnuggene daler ned. Hun bestemmer seg for å lage berlinerkranser. Deigen – med kokt eggeplomme, melis og smør – formes forsiktig og dyppes i perlesukker før steking. Mens kakene kjøles på rist, henger hun opp julelys ute. Små stjerner i mørket, både på himmelen og i hagen.",
+      "game": "wordle",
+      "game-name": "Wordle",
+      "game-description": "Solve the hidden 5-letter word in six tries using tile and keyboard hints."
     },
     {
       "day": 6,
