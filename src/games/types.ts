@@ -6,6 +6,7 @@ export type GameType =
   | 'wordle'
   | 'minesweeper'
   | 'game2048'
+  | 'maze'
 
 export interface GameProps {
   onInteraction?: () => void
