@@ -2,6 +2,7 @@ import { BreakoutGame } from './breakout'
 import { Game2048 } from './game2048'
 import { HangmanGame } from './hangman'
 import { MazeGame } from './maze'
+import { MemoryGame } from './memory'
 import { MinesweeperGame } from './minesweeper'
 import type { GameType } from './types'
 import type { ReactNode } from 'react'
@@ -29,6 +30,9 @@ const gameComponents = {
   ),
   maze: (onInteraction?: () => void) => (
     <MazeGame onInteraction={onInteraction} />
+  ),
+  memory: (onInteraction?: () => void) => (
+    <MemoryGame onInteraction={onInteraction} />
   ),
 }
 
@@ -71,6 +75,11 @@ function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
 
     case 'maze': {
       const Block = gameComponents.maze
+      return Block(onInteraction)
+    }
+
+    case 'memory': {
+      const Block = gameComponents.memory
       return Block(onInteraction)
     }
 
