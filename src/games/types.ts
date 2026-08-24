@@ -4,6 +4,7 @@ export type GameType =
   | 'tictactoe'
   | 'hangman'
   | 'wordle'
+  | 'minesweeper'
 
 export interface GameProps {
   onInteraction?: () => void

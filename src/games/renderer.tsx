@@ -1,5 +1,6 @@
 import { BreakoutGame } from './breakout'
 import { HangmanGame } from './hangman'
+import { MinesweeperGame } from './minesweeper'
 import type { GameType } from './types'
 import type { ReactNode } from 'react'
 import { SnakeGame } from './snake'
@@ -17,6 +18,9 @@ const gameComponents = {
   ),
   wordle: (onInteraction?: () => void) => (
     <WordleGame onInteraction={onInteraction} />
+  ),
+  minesweeper: (onInteraction?: () => void) => (
+    <MinesweeperGame onInteraction={onInteraction} />
   ),
 }
 
@@ -44,6 +48,11 @@ function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
 
     case 'wordle': {
       const Block = gameComponents.wordle
+      return Block(onInteraction)
+    }
+
+    case 'minesweeper': {
+      const Block = gameComponents.minesweeper
       return Block(onInteraction)
     }
 

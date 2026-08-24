@@ -43,7 +43,10 @@
     {
       "day": 6,
       "title": "Søndagstur og små skatter 🗺️",
-      "text": "Denne dagen tar gjengen en pause fra kjøkkenet. Vesla89 og Pe-Hi pakker termos og pepperkaker i sekken og går ut i vinterskogen for å finne en liten geocache. Snøen knitrer under skoene, og latteren ruller mellom trærne. Etterpå deler de kakene ved bålet – med røyklukt og varm sjokolade i koppen."
+      "text": "Denne dagen tar gjengen en pause fra kjøkkenet. Vesla89 og Pe-Hi pakker termos og pepperkaker i sekken og går ut i vinterskogen for å finne en liten geocache. Snøen knitrer under skoene, og latteren ruller mellom trærne. Etterpå deler de kakene ved bålet – med røyklukt og varm sjokolade i koppen.",
+      "game": "minesweeper",
+      "game-name": "Minesweeper",
+      "game-description": "Reveal all safe cells and mark the hidden mines without triggering one."
     },
     {
       "day": 7,
