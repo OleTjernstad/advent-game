@@ -14,7 +14,7 @@ import type { GameProps } from '../types'
 import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
 
 const BOARD_SIZE = 20
-const TICK_RATE = 125
+const TICK_RATE = 170
 
 type Point = { x: number; y: number }
 type Direction = 'up' | 'down' | 'left' | 'right'
