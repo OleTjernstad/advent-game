@@ -249,6 +249,7 @@ export function BreakoutGame({ onInteraction }: GameProps) {
           game.ballX >= game.paddleX - BALL_RADIUS &&
           game.ballX <= game.paddleX + PADDLE_WIDTH + BALL_RADIUS
         if (hitsPaddle) {
+          reportInteraction()
           const hitPosition =
             (game.ballX - (game.paddleX + PADDLE_WIDTH / 2)) /
             (PADDLE_WIDTH / 2)
@@ -334,7 +335,6 @@ export function BreakoutGame({ onInteraction }: GameProps) {
       0,
       Math.min(CANVAS_WIDTH - PADDLE_WIDTH, game.paddleX + amount),
     )
-    reportInteraction()
   }
 
   function movePaddleToPointer(clientX: number) {

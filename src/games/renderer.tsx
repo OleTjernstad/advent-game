@@ -15,8 +15,12 @@ const gameComponents = {
   snakeGame: (onInteraction?: () => void) => (
     <SnakeGame onInteraction={onInteraction} />
   ),
-  breakout: () => <BreakoutGame />,
-  tictactoe: () => <TicTacToeGame />,
+  breakout: (onInteraction?: () => void) => (
+    <BreakoutGame onInteraction={onInteraction} />
+  ),
+  tictactoe: (onInteraction?: () => void) => (
+    <TicTacToeGame onInteraction={onInteraction} />
+  ),
   hangman: (onInteraction?: () => void) => (
     <HangmanGame onInteraction={onInteraction} />
   ),
@@ -49,12 +53,12 @@ function renderBlock(game: GameType, onInteraction?: () => void): ReactNode {
 
     case 'breakout': {
       const Block = gameComponents.breakout
-      return <Block />
+      return Block(onInteraction)
     }
 
     case 'tictactoe': {
       const Block = gameComponents.tictactoe
-      return <Block />
+      return Block(onInteraction)
     }
 
     case 'hangman': {

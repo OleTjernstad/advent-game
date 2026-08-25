@@ -1,5 +1,7 @@
 import { Bot, RotateCcw, Trophy } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
+import type { GameProps } from '../types'
 
 type Mark = 'X' | 'O'
 type Difficulty = 'easy' | 'medium' | 'hard'
@@ -99,7 +101,7 @@ function chooseAiMove(board: Cell[], aiMark: Mark, difficulty: Difficulty) {
   ).move
 }
 
-export function TicTacToeGame() {
+export function TicTacToeGame({ onInteraction }: GameProps) {
   const [board, setBoard] = useState<Cell[]>(EMPTY_BOARD)
   const [playerMark, setPlayerMark] = useState<Mark>('X')
   const [difficulty, setDifficulty] = useState<Difficulty>('hard')
@@ -110,6 +112,21 @@ export function TicTacToeGame() {
 
   const aiMark = otherMark(playerMark)
   const isAiTurn = !winner && turn === aiMark
+
+  const moveCountRef = useRef(0)
+  const interactionReportedRef = useRef(false)
+
+  function reportInteraction() {
+    console.log('moveCountRef.current', moveCountRef.current)
+    moveCountRef.current += 1
+    if (
+      !interactionReportedRef.current &&
+      moveCountRef.current >= MOVES_REQUIRED_FOR_INTERACTION
+    ) {
+      interactionReportedRef.current = true
+      onInteraction?.()
+    }
+  }
 
   function finishRound(nextBoard: Cell[]) {
     const result = getResult(nextBoard)
@@ -133,6 +150,7 @@ export function TicTacToeGame() {
     nextBoard[index] = playerMark
     setBoard(nextBoard)
     finishRound(nextBoard)
+    reportInteraction()
     if (!getResult(nextBoard).winner && availableMoves(nextBoard).length)
       setTurn(aiMark)
   }
