@@ -1,5 +1,13 @@
 Welcome to your new TanStack Start app!
 
+# Innledning tekst til cachebeskrivelse
+
+Desember er her igjen. Ute ligger frosten som et tynt slør over skogen, lysene tennes i vinduene, og lukten av nybakte småkaker fyller hus og hytter.
+
+I år skjer det noe nytt blant vennene. Sammen med hver adventsluke dukker det opp et lite spill. Noen er raske og morsomme, andre krever litt tålmodighet eller kløkt. Spillene blir en naturlig del av dagene deres – små pauser mellom baking, geocaching, juleforberedelser og hyggelige stunder med venner.
+
+Ingen konkurranse. Ingen store mål. Bare litt ekstra moro i den travle førjulstiden.
+
 # Getting Started
 
 To run this application:
