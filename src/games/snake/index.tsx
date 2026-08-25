@@ -194,8 +194,8 @@ export function SnakeGame({ onInteraction }: GameProps) {
   const status = isGameOver
     ? 'Game over'
     : isRunning
-      ? 'In motion'
-      : 'Ready to play'
+      ? 'I bevegelse'
+      : 'Klar til start'
 
   return (
     <section className="rise-in w-full">
@@ -234,14 +234,12 @@ export function SnakeGame({ onInteraction }: GameProps) {
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <div className="rounded-2xl border border-border/50 bg-foreground px-5 py-3 text-center text-background shadow-xl">
                   <strong className="block text-lg">
-                    {isGameOver
-                      ? 'That was a close one.'
-                      : 'Ready when you are.'}
+                    {isGameOver ? 'Det var nære på.' : 'Klar når du er.'}
                   </strong>
                   <span className="text-xs text-white/75">
                     {isGameOver
-                      ? `You scored ${score}.`
-                      : 'Press start or use an arrow key.'}
+                      ? `Din poengsum ${score}.`
+                      : 'Klikk start eller bruk piltastene.'}
                   </span>
                 </div>
               </div>
@@ -301,13 +299,13 @@ export function SnakeGame({ onInteraction }: GameProps) {
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Score
+              Poengsum
             </span>
             <strong className="text-3xl text-card-foreground">{score}</strong>
           </div>
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Best
+              Beste
             </span>
             <strong className="flex items-center gap-1 text-2xl text-card-foreground">
               <Trophy size={17} />
@@ -321,7 +319,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
               className="inline-flex flex-1 items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary"
             >
               {isGameOver ? <RotateCcw size={17} /> : <Play size={17} />}
-              {isGameOver ? 'Play again' : 'Start game'}
+              {isGameOver ? 'Spill igjen' : 'Start spill'}
             </button>
             <button
               type="button"
@@ -330,7 +328,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
               className="inline-flex flex-1 items-center justify-center gap-2 border border-border px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isRunning ? <Pause size={17} /> : <Play size={17} />}
-              {isRunning ? 'Pause' : 'Resume'}
+              {isRunning ? 'Pause' : 'Fortsett'}
             </button>
           </div>
           <span className="col-span-2 hidden text-xs font-semibold text-muted-foreground lg:block">
@@ -340,7 +338,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
       </div>
 
       <p className="mt-5 text-center text-xs text-muted-foreground">
-        Arrow keys or WASD to move · Space to pause
+        Bruk piltastene, eller WASD for å endre retning · Mellomrom for pause
       </p>
     </section>
   )
