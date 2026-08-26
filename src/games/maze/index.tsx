@@ -218,7 +218,7 @@ export function MazeGame({ onInteraction }: GameProps) {
         <div className="mx-auto w-full max-w-140">
           <div
             role="grid"
-            aria-label="Maze board. Reach the green goal tile. Use arrow keys or WASD to move."
+            aria-label="Labyrintbrett. Nå den grønne målbrikken. Bruk piltaster eller WASD for å flytte deg."
             className="mx-auto grid w-full max-w-120 gap-0 rounded-2xl border border-slate-700 bg-slate-800 p-1 shadow-lg"
             style={{
               gridTemplateColumns: `repeat(${MAZE_WIDTH}, minmax(0, 1fr))`,
@@ -273,33 +273,33 @@ export function MazeGame({ onInteraction }: GameProps) {
               className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-4 py-2 font-semibold text-card-foreground transition-colors hover:bg-accent"
             >
               <RotateCcw className="h-4 w-4" />
-              New Maze
+              Ny labyrint
             </button>
             <p className="rounded-md border border-border bg-muted/50 px-4 py-2 text-center text-sm font-medium text-muted-foreground sm:text-left">
               {status === 'won'
-                ? `Solved in ${moves} moves`
-                : `Moves: ${moves}`}
+                ? `Løst på ${moves} trekk`
+                : `Trekk: ${moves}`}
             </p>
           </div>
 
           {status === 'won' ? (
             <p className="mt-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Nice run. You escaped the maze.
+              Bra løst. Du fant veien ut av labyrinten.
             </p>
           ) : null}
         </div>
 
         <aside className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
           <h3 className="text-base font-semibold text-card-foreground">
-            Controls
+            Kontroller
           </h3>
-          <p className="mt-2">Move with arrow keys or WASD.</p>
-          <p className="mt-1">Reach the green tile to win.</p>
+          <p className="mt-2">Flytt med piltaster eller WASD.</p>
+          <p className="mt-1">Nå den grønne brikken for å vinne.</p>
 
           <div className="mx-auto mt-4 grid w-fit grid-cols-3 gap-2">
             <button
               type="button"
-              aria-label="Move up"
+              aria-label="Flytt opp"
               onClick={() => movePlayer('up')}
               className="col-start-2 inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
@@ -307,7 +307,7 @@ export function MazeGame({ onInteraction }: GameProps) {
             </button>
             <button
               type="button"
-              aria-label="Move left"
+              aria-label="Flytt til venstre"
               onClick={() => movePlayer('left')}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
@@ -315,7 +315,7 @@ export function MazeGame({ onInteraction }: GameProps) {
             </button>
             <button
               type="button"
-              aria-label="Move down"
+              aria-label="Flytt ned"
               onClick={() => movePlayer('down')}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
@@ -323,7 +323,7 @@ export function MazeGame({ onInteraction }: GameProps) {
             </button>
             <button
               type="button"
-              aria-label="Move right"
+              aria-label="Flytt til høyre"
               onClick={() => movePlayer('right')}
               className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >

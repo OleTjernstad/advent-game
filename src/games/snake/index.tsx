@@ -43,6 +43,10 @@ function pointsMatch(first: Point, second: Point) {
   return first.x === second.x && first.y === second.y
 }
 
+function directionLabel(value: Direction) {
+  return { up: 'opp', down: 'ned', left: 'venstre', right: 'høyre' }[value]
+}
+
 function createFood(snake: Point[]): Point {
   const openCells: Point[] = []
 
@@ -192,7 +196,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
   }
 
   const status = isGameOver
-    ? 'Game over'
+    ? 'Spillet er over'
     : isRunning
       ? 'I bevegelse'
       : 'Klar til start'
@@ -206,7 +210,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
             style={{
               gridTemplateColumns: `repeat(${BOARD_SIZE}, minmax(0, 1fr))`,
             }}
-            aria-label={`Snake board. ${status}. Use arrow keys or WASD to move.`}
+            aria-label={`Slangebrett. ${status}. Bruk piltaster eller WASD for å flytte deg.`}
             role="grid"
           >
             {Array.from({ length: BOARD_SIZE * BOARD_SIZE }, (_, index) => {
@@ -248,21 +252,21 @@ export function SnakeGame({ onInteraction }: GameProps) {
 
           <div className="mt-5 flex items-center justify-between gap-3 lg:hidden">
             <span className="text-xs font-semibold text-muted-foreground">
-              {status} · {direction} direction
+              {status} · retning: {directionLabel(direction)}
             </span>
           </div>
         </div>
 
         <div
           className="mx-auto mt-6 grid w-44 grid-cols-3 gap-2 lg:hidden"
-          aria-label="Direction controls"
+          aria-label="Retningskontroller"
         >
           <span />
           <button
             type="button"
             onClick={() => changeDirection('up')}
             className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
-            aria-label="Move up"
+            aria-label="Flytt opp"
           >
             <ChevronUp />
           </button>
@@ -271,7 +275,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
             type="button"
             onClick={() => changeDirection('left')}
             className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
-            aria-label="Move left"
+            aria-label="Flytt til venstre"
           >
             <ChevronLeft />
           </button>
@@ -279,7 +283,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
             type="button"
             onClick={() => changeDirection('down')}
             className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
-            aria-label="Move down"
+            aria-label="Flytt ned"
           >
             <ChevronDown />
           </button>
@@ -287,7 +291,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
             type="button"
             onClick={() => changeDirection('right')}
             className="flex aspect-square items-center justify-center border border-border text-card-foreground active:bg-muted"
-            aria-label="Move right"
+            aria-label="Flytt til høyre"
           >
             <ChevronRight />
           </button>
@@ -295,7 +299,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="Game controls"
+          aria-label="Spillkontroller"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
@@ -332,7 +336,7 @@ export function SnakeGame({ onInteraction }: GameProps) {
             </button>
           </div>
           <span className="col-span-2 hidden text-xs font-semibold text-muted-foreground lg:block">
-            {status} · {direction} direction
+            {status} · retning: {directionLabel(direction)}
           </span>
         </aside>
       </div>

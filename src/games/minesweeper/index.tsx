@@ -267,7 +267,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
 
   const statusText =
     status === 'won'
-      ? 'Board cleared'
+      ? 'Brettet er ryddet'
       : status === 'lost'
         ? 'Boom, that was a mine'
         : inputMode === 'flag'
@@ -281,7 +281,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
           <div className="mb-4 grid gap-3 sm:grid-cols-3">
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Bombs left
+                Miner igjen
               </span>
               <strong className="mt-1 inline-flex items-center gap-1 text-xl text-card-foreground">
                 <Bomb size={16} />
@@ -290,7 +290,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
             </div>
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Time
+                Tid
               </span>
               <strong className="mt-1 inline-flex items-center gap-1 text-xl text-card-foreground">
                 <Timer size={16} />
@@ -308,7 +308,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
                   : 'border-border bg-card text-card-foreground hover:bg-accent'
               }`}
             >
-              {inputMode === 'flag' ? 'Flag mode' : 'Reveal mode'}
+              {inputMode === 'flag' ? 'Flaggmodus' : 'Avdekkingsmodus'}
             </button>
           </div>
 
@@ -319,7 +319,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
                 gridTemplateColumns: `repeat(${COLUMNS}, minmax(0, 1fr))`,
               }}
               role="grid"
-              aria-label="Minesweeper board"
+              aria-label="Minesveiperbrett"
               onContextMenu={(event) => event.preventDefault()}
             >
               {board.map((cell, index) => {
@@ -349,11 +349,11 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
                         ? showMine
                           ? 'Mine'
                           : cell.adjacentMines === 0
-                            ? 'Empty cell'
-                            : `${cell.adjacentMines} nearby mines`
+                            ? 'Tom rute'
+                            : `${cell.adjacentMines} miner i nærheten`
                         : cell.isFlagged
-                          ? 'Flagged cell'
-                          : 'Hidden cell'
+                          ? 'Flagget rute'
+                          : 'Skjult rute'
                     }
                   >
                     {showMine ? (
@@ -374,12 +374,12 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
               <div className="absolute inset-0 flex items-center justify-center bg-foreground/78 p-6 text-center">
                 <div className="max-w-sm rounded-xl border border-border/30 bg-card px-5 py-4 shadow-lg">
                   <p className="text-lg font-bold text-card-foreground">
-                    {status === 'won' ? 'Minefield solved.' : 'Mine triggered.'}
+                    {status === 'won' ? 'Minefeltet er løst.' : 'Du traff en mine.'}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {status === 'won'
-                      ? `Completed in ${formatTime(secondsElapsed)}.`
-                      : 'Try a new board and clear all safe cells.'}
+                      ? `Fullført på ${formatTime(secondsElapsed)}.`
+                      : 'Prøv et nytt brett og fjern alle trygge ruter.'}
                   </p>
                 </div>
               </div>
@@ -387,17 +387,17 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
           </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            Click to reveal, right-click to flag, or toggle flag mode for touch.
+            Klikk for å avdekke, høyreklikk for å flagge, eller slå på flaggmodus på berøringsskjerm.
           </p>
         </div>
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="Minesweeper status and controls"
+          aria-label="Minesveiperstatus og kontroller"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Board
+              Brett
             </span>
             <strong className="text-xl text-card-foreground">
               {ROWS} x {COLUMNS}
@@ -406,14 +406,14 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
 
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Wins
+              Seiere
             </span>
             <strong className="text-xl text-card-foreground">{wins}</strong>
           </div>
 
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Best
+              Beste
             </span>
             <strong className="inline-flex items-center gap-1 text-xl text-card-foreground">
               <Trophy size={16} />
@@ -427,7 +427,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
             className="col-span-2 inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary lg:col-span-1"
           >
             <RotateCcw size={17} />
-            New game
+            Nytt spill
           </button>
 
           <span className="col-span-2 min-h-6 text-xs font-semibold text-muted-foreground lg:col-span-1">
@@ -435,7 +435,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
           </span>
 
           <span className="col-span-2 text-xs text-muted-foreground lg:col-span-1">
-            Mines: {MINE_COUNT} total
+            Miner: {MINE_COUNT} totalt
           </span>
         </aside>
       </div>

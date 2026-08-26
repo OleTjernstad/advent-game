@@ -13,7 +13,7 @@ type MemoryCard = {
   isMatched: boolean
 }
 
-const PAIRS = ['BELL', 'GIFT', 'TREE', 'STAR', 'CANDY', 'MITTEN']
+const PAIRS = ['KLOKKE', 'GAVE', 'TRE', 'STJERNE', 'GODTERI', 'VOTT']
 
 function shuffle<T>(values: T[]): T[] {
   const next = [...values]
@@ -154,7 +154,7 @@ export function MemoryGame({ onInteraction }: GameProps) {
             className="mx-auto grid w-full max-w-120 gap-2 rounded-2xl border-2 border-border bg-muted/30 p-3"
             style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}
             role="grid"
-            aria-label="Memory board. Match all Christmas pairs."
+            aria-label="Memorybrett. Finn alle juleparene."
           >
             {deck.map((card) => {
               const isFlipped = flippedIds.includes(card.id) || card.isMatched
@@ -164,7 +164,7 @@ export function MemoryGame({ onInteraction }: GameProps) {
                   key={card.id}
                   type="button"
                   role="gridcell"
-                  aria-label={isFlipped ? `${card.label} card` : 'Hidden card'}
+                  aria-label={isFlipped ? `${card.label}-kort` : 'Skjult kort'}
                   onClick={() => flipCard(card.id)}
                   className={`aspect-square rounded-lg border text-xs font-bold tracking-[0.08em] transition-colors sm:text-sm ${
                     isFlipped
@@ -173,7 +173,7 @@ export function MemoryGame({ onInteraction }: GameProps) {
                   } ${card.isMatched ? 'ring-2 ring-emerald-500/40' : ''}`}
                   disabled={status !== 'playing' || card.isMatched}
                 >
-                  {isFlipped ? card.label : 'HIDE'}
+                  {isFlipped ? card.label : 'SKJULT'}
                 </button>
               )
             })}
@@ -186,30 +186,30 @@ export function MemoryGame({ onInteraction }: GameProps) {
               className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-4 py-2 font-semibold text-card-foreground transition-colors hover:bg-accent"
             >
               <RotateCcw className="h-4 w-4" />
-              New Game
+              Nytt spill
             </button>
             <p className="rounded-md border border-border bg-muted/50 px-4 py-2 text-center text-sm font-medium text-muted-foreground sm:text-left">
               {status === 'won'
-                ? `Solved in ${moves} moves`
-                : `Moves: ${moves}`}
+                ? `Løst på ${moves} trekk`
+                : `Trekk: ${moves}`}
             </p>
           </div>
 
           {status === 'won' ? (
             <p className="mt-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Great memory. You matched every pair.
+              God hukommelse. Du fant alle parene.
             </p>
           ) : null}
         </div>
 
         <aside className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
           <h3 className="text-base font-semibold text-card-foreground">
-            How to play
+            Slik spiller du
           </h3>
-          <p className="mt-2">Flip two cards each turn.</p>
-          <p className="mt-1">Match all pairs to finish the board.</p>
+          <p className="mt-2">Snu to kort hver runde.</p>
+          <p className="mt-1">Finn alle parene for å fullføre brettet.</p>
           <p className="mt-3 text-xs">
-            Image tiles can be plugged in later by replacing card labels.
+            Bildemotiv kan legges til senere ved å bytte ut kortetikettene.
           </p>
           <p className="mt-2 text-xs">
             Pairs: {matchedPairs}/{totalPairs}

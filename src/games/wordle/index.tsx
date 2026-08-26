@@ -11,22 +11,23 @@ const KEYBOARD_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'] as const
 const WORD_BANK = [
   'FROST',
   'CANDY',
-  'MERRY',
-  'SNOWY',
-  'HOLLY',
-  'SLEDS',
-  'COCOA',
-  'BELLS',
-  'TREES',
-  'LIGHT',
-  'STARS',
-  'BERRY',
-  'ELVES',
-  'CAROL',
-  'CHIME',
-  'GIFTS',
-  'ANGEL',
-  'GLADE',
+  'KAKAO',
+  'JULEN',
+  'NISSE',
+  'GAVER',
+  'ENGEL',
+  'GLIMT',
+  'KRANS',
+  'KULER',
+  'VOTTE',
+  'BJELL',
+  'LYSER',
+  'TREET',
+  'FROST',
+  'KANEL',
+  'SLEDE',
+  'LYSET',
+  'JULER',
 ] as const
 
 const WORD_SET: ReadonlySet<string> = new Set(WORD_BANK)
@@ -155,11 +156,11 @@ export function WordleGame({ onInteraction }: GameProps) {
   const commitGuess = useCallback(() => {
     if (outcome !== 'playing') return
     if (currentGuess.length !== WORD_LENGTH) {
-      setMessage(`Need ${WORD_LENGTH} letters`)
+      setMessage(`Du trenger ${WORD_LENGTH} bokstaver`)
       return
     }
     if (!WORD_SET.has(currentGuess)) {
-      setMessage('Word not in list')
+      setMessage('Ordet finnes ikke i listen')
       return
     }
 
@@ -255,8 +256,8 @@ export function WordleGame({ onInteraction }: GameProps) {
     outcome === 'won'
       ? 'Puzzle solved'
       : outcome === 'lost'
-        ? `Word was ${answer}`
-        : `${MAX_ATTEMPTS - guessRows.length} attempts left`
+        ? `Ordet var ${answer}`
+        : `${MAX_ATTEMPTS - guessRows.length} forsøk igjen`
 
   return (
     <section className="rise-in w-full">
@@ -300,12 +301,14 @@ export function WordleGame({ onInteraction }: GameProps) {
               <div className="absolute inset-0 flex items-center justify-center bg-foreground/78 p-6">
                 <div className="max-w-sm rounded-xl border border-border/30 bg-card px-5 py-4 text-center shadow-lg">
                   <p className="text-lg font-bold text-card-foreground">
-                    {outcome === 'won' ? 'Perfect round.' : 'Out of attempts.'}
+                    {outcome === 'won'
+                      ? 'Perfekt runde.'
+                      : 'Ingen forsøk igjen.'}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {outcome === 'won'
-                      ? `Solved in ${guessRows.length} ${guessRows.length === 1 ? 'try' : 'tries'}.`
-                      : `The word was ${answer}.`}
+                      ? `Løst på ${guessRows.length} ${guessRows.length === 1 ? 'forsøk' : 'forsøk'}.`
+                      : `Ordet var ${answer}.`}
                   </p>
                 </div>
               </div>
@@ -314,7 +317,7 @@ export function WordleGame({ onInteraction }: GameProps) {
 
           <div className="mt-4 rounded-xl border border-border bg-muted/30 p-3">
             <p className="mb-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Keyboard
+              Tastatur
             </p>
             <div className="grid gap-2">
               {KEYBOARD_ROWS.map((row, rowIndex) => (
@@ -368,7 +371,7 @@ export function WordleGame({ onInteraction }: GameProps) {
                       disabled={outcome !== 'playing'}
                       className="rounded-md border border-border bg-card px-1 py-2 text-[0.65rem] font-bold text-card-foreground hover:bg-accent disabled:cursor-not-allowed disabled:opacity-50 sm:text-xs"
                     >
-                      DEL
+                      SLETT
                     </button>
                   ) : null}
                 </div>
@@ -377,17 +380,17 @@ export function WordleGame({ onInteraction }: GameProps) {
           </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            Type letters, then press Enter to submit.
+            Skriv bokstaver, og trykk Enter for å sende inn.
           </p>
         </div>
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="Wordle status and controls"
+          aria-label="Wordle-status og kontroller"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Tries left
+              Forsøk igjen
             </span>
             <strong className="text-3xl text-card-foreground">
               {Math.max(0, MAX_ATTEMPTS - guessRows.length)}
@@ -396,14 +399,14 @@ export function WordleGame({ onInteraction }: GameProps) {
 
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Wins
+              Seiere
             </span>
             <strong className="text-xl text-card-foreground">{wins}</strong>
           </div>
 
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Best streak
+              Beste seiersrekke
             </span>
             <strong className="inline-flex items-center gap-1 text-xl text-card-foreground">
               <Trophy size={16} />
@@ -417,7 +420,7 @@ export function WordleGame({ onInteraction }: GameProps) {
             className="col-span-2 inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary lg:col-span-1"
           >
             <RotateCcw size={17} />
-            {outcome === 'playing' ? 'New puzzle' : 'Play again'}
+            {outcome === 'playing' ? 'Ny oppgave' : 'Spill igjen'}
           </button>
 
           <div className="col-span-2 min-h-6 text-xs font-semibold text-muted-foreground lg:col-span-1">
@@ -425,7 +428,7 @@ export function WordleGame({ onInteraction }: GameProps) {
           </div>
 
           <div className="col-span-2 text-xs text-muted-foreground lg:col-span-1">
-            Current guess: {currentGuess || '...'}
+            Gjeldende gjetning: {currentGuess || '...'}
           </div>
         </aside>
       </div>

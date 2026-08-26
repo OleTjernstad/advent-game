@@ -8,16 +8,16 @@ const MAX_WRONG_GUESSES = 6
 const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
 
 const WORD_POOL = [
-  { word: 'SNOWFLAKE', hint: 'A tiny winter crystal.' },
-  { word: 'CANDLE', hint: 'Advent light in the window.' },
-  { word: 'GINGERBREAD', hint: 'A spiced holiday cookie.' },
-  { word: 'REINDEER', hint: 'Pulls Santa through the sky.' },
-  { word: 'SLEIGH', hint: 'A winter ride on snow.' },
-  { word: 'ORNAMENT', hint: 'Decoration for the tree.' },
-  { word: 'NUTCRACKER', hint: 'A wooden holiday figure.' },
-  { word: 'CHIMNEY', hint: 'Santa enters through this.' },
-  { word: 'MISTLETOE', hint: 'A festive plant for doorways.' },
-  { word: 'PEPPERMINT', hint: 'Classic red and white candy.' },
+  { word: 'SNOKRYSTALL', hint: 'En liten vinterkrystall.' },
+  { word: 'LYSLYKTE', hint: 'Adventslys i vinduet.' },
+  { word: 'PEPPERKAKE', hint: 'En krydret julekake.' },
+  { word: 'NISSE', hint: 'Hjelper til med julegavene.' },
+  { word: 'SLEDE', hint: 'Et vinterkjøretøy på snø.' },
+  { word: 'JULEPYNT', hint: 'Pynt til juletreet.' },
+  { word: 'KNEKKER', hint: 'En klassisk figur fra balletten.' },
+  { word: 'SKORSTEIN', hint: 'Nissen kommer inn gjennom denne.' },
+  { word: 'MISTELTEIN', hint: 'En festlig plante til døråpningen.' },
+  { word: 'PEPPERMYNTE', hint: 'Klassisk godteri med smak av jul.' },
 ] as const
 
 type RoundWord = (typeof WORD_POOL)[number]
@@ -140,10 +140,10 @@ export function HangmanGame({ onInteraction }: GameProps) {
 
   const statusText =
     outcome === 'won'
-      ? 'You solved it'
+      ? 'Du løste det'
       : outcome === 'lost'
-        ? 'Round lost'
-        : 'Guess letters'
+        ? 'Runden er tapt'
+        : 'Gjett bokstaver'
 
   return (
     <section className="rise-in w-full">
@@ -151,7 +151,7 @@ export function HangmanGame({ onInteraction }: GameProps) {
         <div className="mx-auto w-full max-w-140">
           <div className="mb-4 rounded-xl border border-border bg-muted/40 p-3 sm:p-4">
             <p className="text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
-              Hint
+              Ledetråd
             </p>
             <p className="mt-1 text-sm text-card-foreground sm:text-base">
               {roundWord.hint}
@@ -161,7 +161,7 @@ export function HangmanGame({ onInteraction }: GameProps) {
           <div className="relative rounded-2xl border-4 border-foreground bg-card p-3 shadow-lg sm:p-6">
             <svg
               viewBox="0 0 220 250"
-              aria-label={`Hangman board. ${statusText}. ${MAX_WRONG_GUESSES - wrongCount} attempts left.`}
+              aria-label={`Hangmanbrett. ${statusText}. ${MAX_WRONG_GUESSES - wrongCount} forsøk igjen.`}
               role="img"
               className="mx-auto h-56 w-full max-w-90 text-foreground"
             >
@@ -284,14 +284,12 @@ export function HangmanGame({ onInteraction }: GameProps) {
               <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-foreground/78 p-6 text-center">
                 <div className="max-w-sm rounded-xl border border-border/30 bg-card px-5 py-4 shadow-lg">
                   <p className="text-lg font-bold text-card-foreground">
-                    {outcome === 'won'
-                      ? 'Great guessing.'
-                      : 'The word got away.'}
+                    {outcome === 'won' ? 'Godt gjettet.' : 'Ordet glapp.'}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {outcome === 'won'
-                      ? `Word solved with ${MAX_WRONG_GUESSES - wrongCount} attempts left.`
-                      : `The word was ${roundWord.word}.`}
+                      ? `Ordet ble løst med ${MAX_WRONG_GUESSES - wrongCount} forsøk igjen.`
+                      : `Ordet var ${roundWord.word}.`}
                   </p>
                 </div>
               </div>
@@ -300,7 +298,7 @@ export function HangmanGame({ onInteraction }: GameProps) {
 
           <div className="mt-4 rounded-xl border border-border bg-muted/30 p-3">
             <p className="mb-2 text-[0.68rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Keyboard
+              Tastatur
             </p>
             <div className="grid grid-cols-7 gap-2 sm:grid-cols-9">
               {LETTERS.map((letter) => {
@@ -319,7 +317,7 @@ export function HangmanGame({ onInteraction }: GameProps) {
                           ? 'border-destructive bg-destructive text-destructive-foreground'
                           : 'border-border bg-card text-card-foreground hover:bg-accent'
                     } disabled:cursor-not-allowed disabled:opacity-80`}
-                    aria-label={`Guess ${letter}`}
+                    aria-label={`Gjett ${letter}`}
                   >
                     {letter}
                   </button>
@@ -329,17 +327,17 @@ export function HangmanGame({ onInteraction }: GameProps) {
           </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            Type a letter or tap the keyboard.
+            Skriv en bokstav eller trykk på tastaturet.
           </p>
         </div>
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="Round status and controls"
+          aria-label="Rundestatus og kontroller"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Attempts left
+              Forsøk igjen
             </span>
             <strong className="text-3xl text-card-foreground">
               {Math.max(0, MAX_WRONG_GUESSES - wrongCount)}
@@ -348,14 +346,14 @@ export function HangmanGame({ onInteraction }: GameProps) {
 
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Wins
+              Seiere
             </span>
             <strong className="text-xl text-card-foreground">{wins}</strong>
           </div>
 
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Best
+              Beste
             </span>
             <strong className="inline-flex items-center gap-1 text-xl text-card-foreground">
               <Trophy size={16} />
@@ -369,18 +367,18 @@ export function HangmanGame({ onInteraction }: GameProps) {
             className="col-span-2 inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary lg:col-span-1"
           >
             <RotateCcw size={17} />
-            {outcome === 'playing' ? 'New word' : 'Play again'}
+            {outcome === 'playing' ? 'Nytt ord' : 'Spill igjen'}
           </button>
 
           <div className="col-span-2 min-h-6 text-xs font-semibold text-muted-foreground lg:col-span-1">
             {duplicateLetter
-              ? `Already guessed: ${duplicateLetter}`
+              ? `Allerede gjettet: ${duplicateLetter}`
               : statusText}
           </div>
 
           <div className="col-span-2 text-xs text-muted-foreground lg:col-span-1">
-            Wrong letters:{' '}
-            {wrongLetters.length > 0 ? wrongLetters.join(', ') : 'none'}
+            Gale bokstaver:{' '}
+            {wrongLetters.length > 0 ? wrongLetters.join(', ') : 'ingen'}
           </div>
         </aside>
       </div>

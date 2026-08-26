@@ -373,14 +373,14 @@ export function BreakoutGame({ onInteraction }: GameProps) {
 
   const statusLabel =
     status === 'playing'
-      ? 'In motion'
+      ? 'I bevegelse'
       : status === 'won'
-        ? 'You cleared the deck'
+        ? 'Du fjernet alle brikkene'
         : status === 'lost'
-          ? 'Game over'
+          ? 'Spillet er over'
           : status === 'paused'
-            ? 'Paused'
-            : 'Ready to play'
+            ? 'Satt på pause'
+            : 'Klar til å spille'
 
   return (
     <section className="rise-in w-full">
@@ -406,24 +406,24 @@ export function BreakoutGame({ onInteraction }: GameProps) {
               onPointerCancel={() => {
                 pointerActiveRef.current = false
               }}
-              aria-label={`Breakout game. ${statusLabel}. Use left and right arrow keys or A and D to move the paddle.`}
+              aria-label={`Breakout-spill. ${statusLabel}. Bruk venstre- og høyrepil eller A og D for å flytte brettet.`}
             />
             {status !== 'playing' && (
               <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
                 <div className="rounded-2xl border border-border/50 bg-foreground px-6 py-4 text-center text-background shadow-xl">
                   <strong className="block text-lg">
                     {status === 'won'
-                      ? 'Every brick is down.'
+                      ? 'Alle brikkene er borte.'
                       : status === 'lost'
-                        ? 'The ball got away.'
+                        ? 'Ballens løp tok slutt.'
                         : status === 'paused'
-                          ? 'Take a breath.'
-                          : 'Ready when you are.'}
+                          ? 'Ta en liten pause.'
+                          : 'Klar når du er.'}
                   </strong>
                   <span className="text-xs text-white/75">
                     {status === 'won' || status === 'lost'
-                      ? `You scored ${score}.`
-                      : 'Press start, space, or enter.'}
+                      ? `Du fikk ${score} poeng.`
+                      : 'Trykk på start, mellomrom eller Enter.'}
                   </span>
                 </div>
               </div>
@@ -432,13 +432,13 @@ export function BreakoutGame({ onInteraction }: GameProps) {
 
           <div
             className="mx-auto mt-6 flex w-52 items-center justify-between gap-3 sm:hidden"
-            aria-label="Paddle controls"
+            aria-label="Brettkontroller"
           >
             <button
               type="button"
               onClick={() => movePaddle(-55)}
               className="rounded-xl border border-border bg-card px-7 py-3 text-xl text-card-foreground"
-              aria-label="Move paddle left"
+              aria-label="Flytt brettet til venstre"
             >
               ←
             </button>
@@ -446,29 +446,29 @@ export function BreakoutGame({ onInteraction }: GameProps) {
               type="button"
               onClick={() => movePaddle(55)}
               className="rounded-xl border border-border bg-card px-7 py-3 text-xl text-card-foreground"
-              aria-label="Move paddle right"
+              aria-label="Flytt brettet til høyre"
             >
               →
             </button>
           </div>
           <p className="mt-5 text-center text-xs text-muted-foreground">
-            Move with your mouse or finger · Arrow keys or A/D · Space to pause
+            Flytt med mus eller finger · Piltaster eller A/D · Mellomrom for pause
           </p>
         </div>
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="Game controls"
+          aria-label="Spillkontroller"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Score
+              Poengsum
             </span>
             <strong className="text-3xl text-card-foreground">{score}</strong>
           </div>
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Best
+              Beste
             </span>
             <strong className="flex items-center gap-1 text-2xl text-card-foreground">
               <Trophy size={17} />
@@ -477,7 +477,7 @@ export function BreakoutGame({ onInteraction }: GameProps) {
           </div>
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Lives
+              Liv
             </span>
             <strong className="text-2xl text-card-foreground">{lives}</strong>
           </div>
@@ -493,8 +493,8 @@ export function BreakoutGame({ onInteraction }: GameProps) {
                 <Play size={17} />
               )}
               {status === 'won' || status === 'lost'
-                ? 'Play again'
-                : 'Start game'}
+                ? 'Spill igjen'
+                : 'Start spill'}
             </button>
             <button
               type="button"
@@ -509,7 +509,7 @@ export function BreakoutGame({ onInteraction }: GameProps) {
               className="inline-flex flex-1 items-center justify-center gap-2 border border-border px-4 py-2.5 text-sm font-bold text-card-foreground hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-40"
             >
               {status === 'playing' ? <Pause size={17} /> : <Play size={17} />}
-              {status === 'playing' ? 'Pause' : 'Resume'}
+              {status === 'playing' ? 'Pause' : 'Fortsett'}
             </button>
           </div>
           <span className="col-span-2 text-xs font-semibold text-muted-foreground lg:col-span-1">

@@ -185,7 +185,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
 
   const status =
     winner === 'draw'
-      ? 'Round draw'
+      ? 'Uavgjort'
       : winner
         ? `${winner} Vinner runden`
         : isAiTurn
@@ -253,7 +253,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
             <div
               className="grid aspect-square min-h-0 grid-cols-3 grid-rows-3 gap-2 rounded-2xl border-4 border-foreground bg-foreground p-2 shadow-lg"
               role="grid"
-              aria-label={`Tic-Tac-Toe board. ${status}`}
+              aria-label={`Tre på rad-brett. ${status}`}
             >
               {board.map((cell, index) => (
                 <button
@@ -271,8 +271,8 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
                   )}
                   aria-label={
                     cell
-                      ? `Cell ${index + 1}: ${cell}`
-                      : `Cell ${index + 1}: empty`
+                      ? `Rute ${index + 1}: ${cell}`
+                      : `Rute ${index + 1}: tom`
                   }
                 >
                   {cell && (
@@ -302,7 +302,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="Session score and controls"
+          aria-label="Poeng og kontroller for økten"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">

@@ -180,7 +180,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
           <div className="mb-4 grid gap-3 sm:grid-cols-4">
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Caches
+                Treff
               </span>
               <strong className="mt-1 text-2xl text-card-foreground">
                 {score}
@@ -188,7 +188,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
             </div>
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Misses
+                Bommerter
               </span>
               <strong className="mt-1 text-2xl text-card-foreground">
                 {misses}
@@ -196,7 +196,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
             </div>
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Accuracy
+                Treffprosent
               </span>
               <strong className="mt-1 text-2xl text-card-foreground">
                 {accuracy}%
@@ -204,7 +204,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
             </div>
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Best
+                Beste
               </span>
               <strong className="mt-1 inline-flex items-center gap-1 text-2xl text-card-foreground">
                 <Trophy size={16} />
@@ -233,7 +233,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
                       : 'border-border bg-card hover:bg-accent'
                   }`}
                   aria-label={
-                    isActive ? 'Active cache marker' : 'Empty cache spot'
+                    isActive ? 'Aktivt mål' : 'Tomt målområde'
                   }
                 >
                   {isActive ? (
@@ -252,7 +252,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
                       <span className="absolute inset-3 animate-ping rounded-full border-2 border-amber-300/90" />
                       <span className="absolute inset-0 flex items-center justify-center">
                         <span className="rounded-full border border-amber-200/70 bg-amber-400/85 px-2 py-0.5 text-[0.62rem] font-black uppercase tracking-[0.08em] text-amber-950 shadow-md animate-bounce">
-                          +1 cache
+                          +1 treff
                         </span>
                       </span>
                     </span>
@@ -279,32 +279,32 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
               className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-card px-4 py-2 font-semibold text-card-foreground transition-colors hover:bg-accent"
             >
               <RotateCcw className="h-4 w-4" />
-              {status === 'running' ? 'Restart Round' : 'Start Round'}
+              {status === 'running' ? 'Start runden på nytt' : 'Start runde'}
             </button>
             <div className="inline-flex items-center justify-center gap-2 rounded-md border border-border bg-muted/50 px-4 py-2 text-sm font-semibold text-card-foreground sm:justify-start">
               <Timer className="h-4 w-4" />
               {status === 'running'
-                ? `${timeLeft}s left`
-                : `${ROUND_SECONDS}s round`}
+                ? `${timeLeft} sek igjen`
+                : `${ROUND_SECONDS} sek runde`}
             </div>
           </div>
 
           {status === 'ended' ? (
             <p className="mt-4 rounded-md border border-emerald-500/40 bg-emerald-500/10 px-4 py-3 text-sm font-semibold text-emerald-700 dark:text-emerald-300">
-              Round over. You logged {score} caches.
+              Runden er over. Du fikk {score} treff.
             </p>
           ) : null}
         </div>
 
         <aside className="rounded-xl border border-border bg-muted/30 p-4 text-sm text-muted-foreground">
           <h3 className="text-base font-semibold text-card-foreground">
-            How to play
+            Slik spiller du
           </h3>
           <p className="mt-2">
-            A cache signal appears in one grid spot at a time.
+            Et mål dukker opp i ett område om gangen.
           </p>
-          <p className="mt-1">Tap it before it moves to log the cache.</p>
-          <p className="mt-1">Missed taps count as misses.</p>
+          <p className="mt-1">Trykk på det før det flytter seg for å få treff.</p>
+          <p className="mt-1">Bommerter registreres som bommerter.</p>
         </aside>
       </div>
     </section>

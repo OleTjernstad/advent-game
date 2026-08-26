@@ -235,10 +235,10 @@ export function Game2048({ onInteraction }: GameProps) {
 
   const statusText =
     outcome === 'won'
-      ? 'Target reached'
+      ? 'Målet er nådd'
       : outcome === 'lost'
-        ? 'No more moves'
-        : 'Merge matching tiles'
+        ? 'Ingen flere trekk'
+        : 'Slå sammen like brikker'
 
   function onTouchStart(event: TouchEvent<HTMLDivElement>) {
     const touch = event.touches[0]
@@ -274,7 +274,7 @@ export function Game2048({ onInteraction }: GameProps) {
           <div className="mb-4 grid gap-3 sm:grid-cols-3">
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Score
+                Poengsum
               </span>
               <strong className="mt-1 text-2xl text-card-foreground">
                 {score}
@@ -282,7 +282,7 @@ export function Game2048({ onInteraction }: GameProps) {
             </div>
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Best
+                Beste
               </span>
               <strong className="mt-1 inline-flex items-center gap-1 text-2xl text-card-foreground">
                 <Trophy size={16} />
@@ -291,7 +291,7 @@ export function Game2048({ onInteraction }: GameProps) {
             </div>
             <div className="rounded-xl border border-border bg-muted/40 p-3 text-center">
               <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Max tile
+                Største brikke
               </span>
               <strong className="mt-1 text-2xl text-card-foreground">
                 {maxTile}
@@ -307,7 +307,7 @@ export function Game2048({ onInteraction }: GameProps) {
                 touchAction: 'none',
               }}
               role="grid"
-              aria-label="2048 board"
+              aria-label="2048-brett"
               onTouchStart={onTouchStart}
               onTouchEnd={onTouchEnd}
             >
@@ -326,12 +326,12 @@ export function Game2048({ onInteraction }: GameProps) {
               <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-foreground/78 p-6 text-center">
                 <div className="max-w-sm rounded-xl border border-border/30 bg-card px-5 py-4 shadow-lg">
                   <p className="text-lg font-bold text-card-foreground">
-                    {outcome === 'won' ? '2048 reached.' : 'Board locked.'}
+                    {outcome === 'won' ? '2048 er nådd.' : 'Brettet er låst.'}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {outcome === 'won'
-                      ? 'Start a new board to beat your score.'
-                      : 'No adjacent matches left, try a new game.'}
+                      ? 'Start et nytt brett for å slå poengsummen din.'
+                      : 'Ingen flere brikker kan slås sammen. Prøv et nytt spill.'}
                   </p>
                 </div>
               </div>
@@ -340,14 +340,14 @@ export function Game2048({ onInteraction }: GameProps) {
 
           <div
             className="mx-auto mt-4 grid w-44 grid-cols-3 gap-2 lg:hidden"
-            aria-label="Directional controls"
+            aria-label="Retningskontroller"
           >
             <span />
             <button
               type="button"
               onClick={() => attemptMove('up')}
               className="flex aspect-square items-center justify-center border border-border bg-card text-card-foreground active:bg-accent"
-              aria-label="Move up"
+              aria-label="Flytt opp"
             >
               <ChevronUp />
             </button>
@@ -356,7 +356,7 @@ export function Game2048({ onInteraction }: GameProps) {
               type="button"
               onClick={() => attemptMove('left')}
               className="flex aspect-square items-center justify-center border border-border bg-card text-card-foreground active:bg-accent"
-              aria-label="Move left"
+              aria-label="Flytt til venstre"
             >
               <ChevronLeft />
             </button>
@@ -364,7 +364,7 @@ export function Game2048({ onInteraction }: GameProps) {
               type="button"
               onClick={() => attemptMove('down')}
               className="flex aspect-square items-center justify-center border border-border bg-card text-card-foreground active:bg-accent"
-              aria-label="Move down"
+              aria-label="Flytt ned"
             >
               <ChevronDown />
             </button>
@@ -372,24 +372,24 @@ export function Game2048({ onInteraction }: GameProps) {
               type="button"
               onClick={() => attemptMove('right')}
               className="flex aspect-square items-center justify-center border border-border bg-card text-card-foreground active:bg-accent"
-              aria-label="Move right"
+              aria-label="Flytt til høyre"
             >
               <ChevronRight />
             </button>
           </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            Use arrow keys or WASD, or swipe on mobile.
+            Bruk piltaster eller WASD, eller sveip på mobil.
           </p>
         </div>
 
         <aside
           className="grid grid-cols-2 gap-3 lg:grid-cols-1"
-          aria-label="2048 status and controls"
+          aria-label="2048-status og kontroller"
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Goal
+              Mål
             </span>
             <strong className="text-2xl text-card-foreground">
               {TARGET_TILE}
@@ -402,7 +402,7 @@ export function Game2048({ onInteraction }: GameProps) {
             className="col-span-2 inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary lg:col-span-1"
           >
             <RotateCcw size={17} />
-            New game
+            Nytt spill
           </button>
 
           <span className="col-span-2 min-h-6 text-xs font-semibold text-muted-foreground lg:col-span-1">
