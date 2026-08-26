@@ -2,6 +2,7 @@ import { Bot, RotateCcw, Trophy } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
 import type { GameProps } from '../types'
+import { cn } from '#/lib/utils'
 
 type Mark = 'X' | 'O'
 type Difficulty = 'easy' | 'medium' | 'hard'
@@ -186,10 +187,10 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
     winner === 'draw'
       ? 'Round draw'
       : winner
-        ? `${winner} wins the round`
+        ? `${winner} Vinner runden`
         : isAiTurn
-          ? 'Computer is thinking...'
-          : `Your turn · ${playerMark}`
+          ? 'Dataen tenker...'
+          : `Din tur · ${playerMark}`
 
   return (
     <section className="rise-in w-full">
@@ -198,7 +199,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
           <div className="mb-5 grid gap-3 sm:grid-cols-2">
             <div className="rounded-xl border border-border bg-muted/40 p-3">
               <span className="mb-2 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Your mark
+                Ditt merke
               </span>
               <div className="grid grid-cols-2 gap-2">
                 {(['X', 'O'] as Mark[]).map((mark) => (
@@ -215,7 +216,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
             </div>
             <label className="rounded-xl border border-border bg-muted/40 p-3">
               <span className="mb-2 block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-                Difficulty
+                Vanskelighetsgrad
               </span>
               <select
                 value={difficulty}
@@ -225,9 +226,9 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
                 }}
                 className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-semibold text-card-foreground outline-none focus:ring-2 focus:ring-ring"
               >
-                <option value="easy">Easy</option>
+                <option value="easy">Lett</option>
                 <option value="medium">Medium</option>
-                <option value="hard">Hard</option>
+                <option value="hard">Vanskelig</option>
               </select>
             </label>
           </div>
@@ -242,10 +243,10 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
                 <Trophy size={17} />
                 <span>
                   {winner === 'draw'
-                    ? 'It is a draw!'
+                    ? 'Uavgjort!'
                     : winner === playerMark
-                      ? 'You win the round!'
-                      : 'The computer wins the round.'}
+                      ? 'Du vinner runden!'
+                      : 'Dataen vinner runden.'}
                 </span>
               </div>
             )}
@@ -261,7 +262,13 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
                   role="gridcell"
                   onClick={() => playMove(index)}
                   disabled={Boolean(cell) || Boolean(winner) || isAiTurn}
-                  className={`flex min-h-0 items-center justify-center overflow-hidden rounded-xl bg-card text-6xl font-black leading-none transition-colors sm:text-8xl ${winningLine.includes(index) ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'} disabled:cursor-default`}
+                  className={cn(
+                    `flex min-h-0 items-center justify-center overflow-hidden rounded-xl bg-card text-6xl font-black leading-none transition-colors sm:text-8xl disabled:cursor-default hover:bg-accent`,
+                    {
+                      'bg-primary/65 hover:bg-primary/50':
+                        winningLine.includes(index),
+                    },
+                  )}
                   aria-label={
                     cell
                       ? `Cell ${index + 1}: ${cell}`
@@ -289,7 +296,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
             </span>
           </div>
           <p className="mt-5 text-center text-xs text-muted-foreground">
-            Choose your mark, then click an empty square to play.
+            Velg ditt merke, og trykk i en rute for å vinne.
           </p>
         </div>
 
@@ -299,7 +306,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
         >
           <div className="col-span-2 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Wins
+              Seiere
             </span>
             <strong className="flex items-center gap-1 text-2xl text-card-foreground">
               <Trophy size={17} />
@@ -308,7 +315,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
           </div>
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Draws
+              Uavgjort
             </span>
             <strong className="text-xl text-card-foreground">
               {score.draws}
@@ -316,7 +323,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
           </div>
           <div className="col-span-1 flex items-center justify-between border-b border-border pb-3 lg:col-span-1 lg:block lg:pb-4">
             <span className="block text-[0.65rem] font-bold uppercase tracking-[0.14em] text-muted-foreground">
-              Losses
+              Tap
             </span>
             <strong className="text-xl text-card-foreground">
               {score.losses}
@@ -328,7 +335,7 @@ export function TicTacToeGame({ onInteraction }: GameProps) {
             className="col-span-2 inline-flex items-center justify-center gap-2 bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:-translate-y-0.5 hover:bg-sidebar-primary lg:col-span-1"
           >
             <RotateCcw size={17} />
-            New round
+            Ny runde
           </button>
           <span className="col-span-2 hidden items-center gap-2 text-xs font-semibold text-muted-foreground lg:inline-flex">
             <Bot size={15} />
