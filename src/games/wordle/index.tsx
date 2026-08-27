@@ -3,32 +3,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { GameProps } from '../types'
 import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
+import { WORD_BANK } from './word-list'
 
 const WORD_LENGTH = 5
 const MAX_ATTEMPTS = 6
 const KEYBOARD_ROWS = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'] as const
-
-const WORD_BANK = [
-  'FROST',
-  'CANDY',
-  'KAKAO',
-  'JULEN',
-  'NISSE',
-  'GAVER',
-  'ENGEL',
-  'GLIMT',
-  'KRANS',
-  'KULER',
-  'VOTTE',
-  'BJELL',
-  'LYSER',
-  'TREET',
-  'FROST',
-  'KANEL',
-  'SLEDE',
-  'LYSET',
-  'JULER',
-] as const
 
 const WORD_SET: ReadonlySet<string> = new Set(WORD_BANK)
 

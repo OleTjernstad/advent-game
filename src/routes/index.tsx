@@ -36,6 +36,17 @@ function AdventCalendar() {
 
   const handleOpenWindow = (day: number) => openWindow(day)
 
+  // function filterWords(words: string) {
+  //   const array = words.split(/\r?\n/)
+
+  //   return array.filter((w) => w.length === 5)
+  // }
+  // return (
+  //   <div>
+  //     <code>"{filterWords(words).join('", "')}"</code>
+  //   </div>
+  // )
+
   return (
     <div>
       <div className="sticky top-0 z-50 flex h-16 w-full items-center justify-end px-4">
