@@ -5,19 +5,24 @@ import type { GameProps } from '../types'
 import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
 
 const MAX_WRONG_GUESSES = 6
-const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('')
+const LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ'.split('')
 
 const WORD_POOL = [
-  { word: 'SNOKRYSTALL', hint: 'En liten vinterkrystall.' },
-  { word: 'LYSLYKTE', hint: 'Adventslys i vinduet.' },
+  { word: 'SNØKRYSTALL', hint: 'En liten vinterkrystall.' },
+  { word: 'LYSLYKT', hint: 'Adventslys i vinduet.' },
   { word: 'PEPPERKAKE', hint: 'En krydret julekake.' },
   { word: 'NISSE', hint: 'Hjelper til med julegavene.' },
   { word: 'SLEDE', hint: 'Et vinterkjøretøy på snø.' },
-  { word: 'JULEPYNT', hint: 'Pynt til juletreet.' },
-  { word: 'KNEKKER', hint: 'En klassisk figur fra balletten.' },
-  { word: 'SKORSTEIN', hint: 'Nissen kommer inn gjennom denne.' },
+  { word: 'JULEKULE', hint: 'Pynt til juletreet.' },
+  { word: 'JULEKALENDER', hint: 'En nedtelling til julaften.' },
   { word: 'MISTELTEIN', hint: 'En festlig plante til døråpningen.' },
   { word: 'PEPPERMYNTE', hint: 'Klassisk godteri med smak av jul.' },
+  { word: 'GEOCACHING', hint: 'Leken vår.' },
+  { word: 'GEOCACHE', hint: 'HVa vi her gjemt.' },
+  { word: 'TRADISJONELL', hint: 'Grønt ikon.' },
+  { word: 'MULTI', hint: 'Flere steg.' },
+  { word: 'MYSTERY', hint: 'En oppgave å løse.' },
+  { word: 'GPS', hint: 'Verktøy for å finne retning.' },
 ] as const
 
 type RoundWord = (typeof WORD_POOL)[number]
