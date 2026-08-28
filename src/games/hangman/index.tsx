@@ -1,4 +1,4 @@
-import { RotateCcw, Trophy } from 'lucide-react'
+import { Eye, RotateCcw, Trophy } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { GameProps } from '../types'
@@ -16,7 +16,7 @@ const WORD_POOL = [
   { word: 'JULEKULE', hint: 'Pynt til juletreet.' },
   { word: 'JULEKALENDER', hint: 'En nedtelling til julaften.' },
   { word: 'MISTELTEIN', hint: 'En festlig plante til døråpningen.' },
-  { word: 'PEPPERMYNTE', hint: 'Klassisk godteri med smak av jul.' },
+  { word: 'PEPPERKAKEMANN', hint: 'Klassisk kake til jul.' },
   { word: 'GEOCACHING', hint: 'Leken vår.' },
   { word: 'GEOCACHE', hint: 'HVa vi her gjemt.' },
   { word: 'TRADISJONELL', hint: 'Grønt ikon.' },
@@ -38,6 +38,18 @@ function drawPart(part: number, wrongGuesses: number) {
   return wrongGuesses > part
 }
 
+function rot13(text: string) {
+  return text.replace(/[a-zA-ZæøåÆØÅ]/g, (char) => {
+    const isUpper = char === char.toUpperCase()
+    const alphabet = isUpper
+      ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ'
+      : 'abcdefghijklmnopqrstuvwxyzæøå'
+    const index = alphabet.indexOf(char)
+    if (index === -1) return char
+    return alphabet[(index + 13) % alphabet.length]
+  })
+}
+
 export function HangmanGame({ onInteraction }: GameProps) {
   const [roundWord, setRoundWord] = useState<RoundWord>(WORD_POOL[0])
   const [correctLetters, setCorrectLetters] = useState<string[]>([])
@@ -45,6 +57,7 @@ export function HangmanGame({ onInteraction }: GameProps) {
   const [wins, setWins] = useState(0)
   const [bestWins, setBestWins] = useState(0)
   const [duplicateLetter, setDuplicateLetter] = useState<string | null>(null)
+  const [isHintRevealed, setIsHintRevealed] = useState(false)
 
   const moveCountRef = useRef(0)
   const interactionReportedRef = useRef(false)
@@ -139,6 +152,7 @@ export function HangmanGame({ onInteraction }: GameProps) {
     setCorrectLetters([])
     setWrongLetters([])
     setDuplicateLetter(null)
+    setIsHintRevealed(false)
     moveCountRef.current = 0
     interactionReportedRef.current = false
   }
@@ -154,14 +168,26 @@ export function HangmanGame({ onInteraction }: GameProps) {
     <section className="rise-in w-full">
       <div className="grid w-full items-start gap-6 lg:grid-cols-[minmax(0,1fr)_13rem] lg:gap-10">
         <div className="mx-auto w-full max-w-140">
-          <div className="mb-4 rounded-xl border border-border bg-muted/40 p-3 sm:p-4">
-            <p className="text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+          <button
+            type="button"
+            onClick={() => setIsHintRevealed(true)}
+            onMouseEnter={() => setIsHintRevealed(true)}
+            onFocus={() => setIsHintRevealed(true)}
+            className="mb-4 w-full rounded-xl border border-border bg-muted/40 p-3 text-left transition-colors hover:bg-muted/60 sm:p-4"
+            aria-label={
+              isHintRevealed
+                ? `Ledetråd: ${roundWord.hint}`
+                : 'Klikk eller hold musepekeren over for å vise ledetråden'
+            }
+          >
+            <p className="flex items-center gap-1.5 text-xs font-semibold tracking-[0.08em] text-muted-foreground uppercase">
               Ledetråd
+              {!isHintRevealed ? <Eye size={13} aria-hidden="true" /> : null}
             </p>
             <p className="mt-1 text-sm text-card-foreground sm:text-base">
-              {roundWord.hint}
+              {isHintRevealed ? roundWord.hint : rot13(roundWord.hint)}
             </p>
-          </div>
+          </button>
 
           <div className="relative rounded-2xl border-4 border-foreground bg-card p-3 shadow-lg sm:p-6">
             <svg
