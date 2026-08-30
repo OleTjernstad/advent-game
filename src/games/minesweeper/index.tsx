@@ -125,21 +125,21 @@ function formatTime(seconds: number) {
 function numberClass(adjacency: number) {
   switch (adjacency) {
     case 1:
-      return 'text-blue-600 dark:text-blue-400'
+      return 'text-blue-700'
     case 2:
-      return 'text-emerald-600 dark:text-emerald-400'
+      return 'text-emerald-700'
     case 3:
-      return 'text-red-600 dark:text-red-400'
+      return 'text-red-700'
     case 4:
-      return 'text-indigo-600 dark:text-indigo-400'
+      return 'text-indigo-800'
     case 5:
-      return 'text-orange-600 dark:text-orange-400'
+      return 'text-orange-800'
     case 6:
-      return 'text-cyan-600 dark:text-cyan-400'
+      return 'text-cyan-800'
     case 7:
-      return 'text-violet-700 dark:text-violet-400'
+      return 'text-violet-900'
     case 8:
-      return 'text-zinc-700 dark:text-zinc-300'
+      return 'text-slate-950'
     default:
       return ''
   }
@@ -188,7 +188,10 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
     setWins((count) => count + 1)
     if (bestTime === null || secondsElapsed < bestTime) {
       setBestTime(secondsElapsed)
-      window.localStorage.setItem('minesweeper-best-time', String(secondsElapsed))
+      window.localStorage.setItem(
+        'minesweeper-best-time',
+        String(secondsElapsed),
+      )
     }
   }, [bestTime, secondsElapsed, status])
 
@@ -312,7 +315,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
             </button>
           </div>
 
-          <div className="relative rounded-2xl border-4 border-foreground bg-foreground p-2 shadow-lg sm:p-3">
+          <div className="relative rounded-2xl border-4 border-slate-950 bg-slate-950 p-2 shadow-lg sm:p-3">
             <div
               className="grid aspect-square w-full gap-1"
               style={{
@@ -324,7 +327,8 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
             >
               {board.map((cell, index) => {
                 const showMine = cell.isRevealed && cell.isMine
-                const showNumber = cell.isRevealed && !cell.isMine && cell.adjacentMines > 0
+                const showNumber =
+                  cell.isRevealed && !cell.isMine && cell.adjacentMines > 0
                 const showFlag = !cell.isRevealed && cell.isFlagged
 
                 return (
@@ -340,9 +344,9 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
                     className={`flex aspect-square min-h-0 items-center justify-center border text-sm font-black sm:text-base ${
                       cell.isRevealed
                         ? showMine
-                          ? 'border-destructive bg-destructive/85 text-destructive-foreground'
-                          : 'border-border bg-card text-card-foreground'
-                        : 'border-border bg-muted text-card-foreground hover:bg-accent'
+                          ? 'border-red-950 bg-red-600 text-white'
+                          : 'border-slate-400 bg-slate-100 text-slate-950'
+                        : 'border-slate-700 bg-slate-700 text-white shadow-[inset_0_2px_0_rgb(255_255_255/0.24)] hover:bg-slate-600'
                     } ${!cell.isRevealed ? 'active:scale-[0.97]' : ''}`}
                     aria-label={
                       cell.isRevealed
@@ -359,7 +363,7 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
                     {showMine ? (
                       <Bomb size={14} />
                     ) : showFlag ? (
-                      <Flag size={14} className="text-primary" />
+                      <Flag size={14} className="text-amber-300" />
                     ) : showNumber ? (
                       <span className={numberClass(cell.adjacentMines)}>
                         {cell.adjacentMines}
@@ -374,7 +378,9 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
               <div className="absolute inset-0 flex items-center justify-center bg-foreground/78 p-6 text-center">
                 <div className="max-w-sm rounded-xl border border-border/30 bg-card px-5 py-4 shadow-lg">
                   <p className="text-lg font-bold text-card-foreground">
-                    {status === 'won' ? 'Minefeltet er løst.' : 'Du traff en mine.'}
+                    {status === 'won'
+                      ? 'Minefeltet er løst.'
+                      : 'Du traff en mine.'}
                   </p>
                   <p className="mt-1 text-sm text-muted-foreground">
                     {status === 'won'
@@ -387,7 +393,8 @@ export function MinesweeperGame({ onInteraction }: GameProps) {
           </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
-            Klikk for å avdekke, høyreklikk for å flagge, eller slå på flaggmodus på berøringsskjerm.
+            Klikk for å avdekke, høyreklikk for å flagge, eller slå på
+            flaggmodus på berøringsskjerm.
           </p>
         </div>
 
