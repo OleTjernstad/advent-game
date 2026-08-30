@@ -4,9 +4,13 @@ import { useEffect, useState } from 'react'
 import type { GameType } from '#/games/types'
 import { RenderGame } from '#/games/renderer'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
+import { buildTitle } from '#/config/seo'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/game/$game')({
+  head: ({ params }) => ({
+    meta: [{ title: buildTitle(params.game) }],
+  }),
   component: WindowPage,
 })
 

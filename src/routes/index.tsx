@@ -4,10 +4,19 @@ import { CalendarWindow } from '#/components/calendar/CalendarWindow'
 import { CompletionModal } from '#/components/calendar/CompletionModal'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
 import ThemeToggle from '#/components/ThemeToggle'
+import { SITE_DESCRIPTION, buildTitle } from '#/config/seo'
 import { createFileRoute } from '@tanstack/react-router'
 import { useCalendarState } from '#/hooks/use-calendar-state'
 
-export const Route = createFileRoute('/')({ component: AdventCalendar })
+export const Route = createFileRoute('/')({
+  head: () => ({
+    meta: [
+      { title: buildTitle() },
+      { name: 'description', content: SITE_DESCRIPTION },
+    ],
+  }),
+  component: AdventCalendar,
+})
 
 function formatTimeRemaining(hours: number | null): string {
   if (hours === null || hours <= 0) return ''

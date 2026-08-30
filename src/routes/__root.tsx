@@ -8,6 +8,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { SITE_DESCRIPTION, SITE_TITLE } from '#/config/seo'
 import appCss from '../styles.css?url'
 
 interface MyRouterContext {
@@ -27,7 +28,11 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: SITE_TITLE,
+      },
+      {
+        name: 'description',
+        content: SITE_DESCRIPTION,
       },
     ],
     links: [

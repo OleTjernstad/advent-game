@@ -5,10 +5,22 @@ import { useEffect, useState } from 'react'
 import type { GameType } from '#/games/types'
 import { RenderGame } from '#/games/renderer'
 import { Snowflakes } from '#/components/calendar/Snowflakes'
+import { buildTitle, getDayTitle } from '#/config/seo'
 import { useCalendarState } from '#/hooks/use-calendar-state'
 import windowContent from '#/data/window-content.json'
 
 export const Route = createFileRoute('/calendar/window/$day')({
+  head: ({ params }) => {
+    const day = Number(params.day)
+    const content = windowContent.windows.find((w) => w.day === day)
+
+    return {
+      meta: [
+        { title: buildTitle(getDayTitle(day)) },
+        ...(content ? [{ name: 'description', content: content.text }] : []),
+      ],
+    }
+  },
   component: WindowPage,
 })
 
