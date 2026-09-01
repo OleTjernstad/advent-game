@@ -20,7 +20,7 @@ export function Snowflakes() {
       {snowflakes.map((flake) => (
         <div
           key={flake.id}
-          className="animate-fall absolute top-[-5%] text-white opacity-60"
+          className="animate-fall absolute top-[-5%] text-sky-600 opacity-70 dark:text-white dark:opacity-60"
           style={{
             left: `${flake.left}%`,
             animationDelay: `${flake.delay}s`,
