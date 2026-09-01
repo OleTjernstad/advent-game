@@ -296,12 +296,12 @@ export function MazeGame({ onInteraction }: GameProps) {
           <p className="mt-2">Flytt med piltaster eller WASD.</p>
           <p className="mt-1">Nå den grønne brikken for å vinne.</p>
 
-          <div className="mx-auto mt-4 grid w-fit grid-cols-3 gap-2">
+          <div className="mx-auto mt-4 grid w-fit grid-cols-3 grid-rows-2 gap-2">
             <button
               type="button"
               aria-label="Flytt opp"
               onClick={() => movePlayer('up')}
-              className="col-start-2 inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
+              className="col-start-2 row-start-1 inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
               <ChevronUp className="h-4 w-4" />
             </button>
@@ -309,7 +309,7 @@ export function MazeGame({ onInteraction }: GameProps) {
               type="button"
               aria-label="Flytt til venstre"
               onClick={() => movePlayer('left')}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
+              className="col-start-1 row-start-2 inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
@@ -317,7 +317,7 @@ export function MazeGame({ onInteraction }: GameProps) {
               type="button"
               aria-label="Flytt ned"
               onClick={() => movePlayer('down')}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
+              className="col-start-2 row-start-2 inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
               <ChevronDown className="h-4 w-4" />
             </button>
@@ -325,7 +325,7 @@ export function MazeGame({ onInteraction }: GameProps) {
               type="button"
               aria-label="Flytt til høyre"
               onClick={() => movePlayer('right')}
-              className="inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
+              className="col-start-3 row-start-2 inline-flex h-9 w-9 items-center justify-center rounded-md border border-border bg-card text-card-foreground transition-colors hover:bg-accent"
             >
               <ChevronRight className="h-4 w-4" />
             </button>
