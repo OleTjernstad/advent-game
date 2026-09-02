@@ -1,8 +1,8 @@
-import { RotateCcw } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { GameProps } from '../types'
 import { MOVES_REQUIRED_FOR_INTERACTION } from '../types'
+import { RotateCcw } from 'lucide-react'
 
 type GameStatus = 'playing' | 'won'
 
@@ -10,10 +10,22 @@ type MemoryCard = {
   id: number
   pairId: number
   label: string
+  imageSrc: string
   isMatched: boolean
 }
 
-const PAIRS = ['KLOKKE', 'GAVE', 'TRE', 'STJERNE', 'GODTERI', 'VOTT']
+const PAIRS = [
+  { label: 'Julenisse', imageSrc: '/memory/santa.png' },
+  { label: 'Signal gjør CITO', imageSrc: '/memory/S-CITO.png' },
+  { label: 'Signal tada', imageSrc: '/memory/S-tada.png' },
+  { label: 'Signal vinker', imageSrc: '/memory/S-waving.png' },
+  { label: 'Signal geocache', imageSrc: '/memory/S-geocache_lock-lock.png' },
+  { label: 'Signal går tur', imageSrc: '/memory/S-hiking.png' },
+  { label: 'Signal loggbok', imageSrc: '/memory/S-logbook.png' },
+  { label: 'Multi', imageSrc: '/memory/multi.svg' },
+  { label: 'Mystery', imageSrc: '/memory/mystery.svg' },
+  { label: 'Wherigo', imageSrc: '/memory/wherigo.svg' },
+]
 
 function shuffle<T>(values: T[]): T[] {
   const next = [...values]
@@ -29,14 +41,15 @@ function shuffle<T>(values: T[]): T[] {
 }
 
 function createDeck(): MemoryCard[] {
-  const pairCards = PAIRS.flatMap((label, pairId) => [
-    { pairId, label },
-    { pairId, label },
+  const pairCards = PAIRS.flatMap(({ label, imageSrc }, pairId) => [
+    { pairId, label, imageSrc },
+    { pairId, label, imageSrc },
   ])
 
   return shuffle(pairCards).map((card, index) => ({
     id: index,
     pairId: card.pairId,
+    imageSrc: card.imageSrc,
     label: card.label,
     isMatched: false,
   }))
@@ -154,7 +167,7 @@ export function MemoryGame({ onInteraction }: GameProps) {
             className="mx-auto grid w-full max-w-120 gap-2 rounded-2xl border-2 border-border bg-muted/30 p-3"
             style={{ gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }}
             role="grid"
-            aria-label="Memorybrett. Finn alle juleparene."
+            aria-label="Memorybrett. Finn alle parene."
           >
             {deck.map((card) => {
               const isFlipped = flippedIds.includes(card.id) || card.isMatched
@@ -173,7 +186,11 @@ export function MemoryGame({ onInteraction }: GameProps) {
                   } ${card.isMatched ? 'ring-2 ring-emerald-500/40' : ''}`}
                   disabled={status !== 'playing' || card.isMatched}
                 >
-                  {isFlipped ? card.label : 'SKJULT'}
+                  <img
+                    src={isFlipped ? card.imageSrc : '/memory/logo.png'}
+                    alt=""
+                    className="pointer-events-none h-full w-full object-contain p-1"
+                  />
                 </button>
               )
             })}
@@ -189,9 +206,7 @@ export function MemoryGame({ onInteraction }: GameProps) {
               Nytt spill
             </button>
             <p className="rounded-md border border-border bg-muted/50 px-4 py-2 text-center text-sm font-medium text-muted-foreground sm:text-left">
-              {status === 'won'
-                ? `Løst på ${moves} trekk`
-                : `Trekk: ${moves}`}
+              {status === 'won' ? `Løst på ${moves} trekk` : `Trekk: ${moves}`}
             </p>
           </div>
 
@@ -208,9 +223,7 @@ export function MemoryGame({ onInteraction }: GameProps) {
           </h3>
           <p className="mt-2">Snu to kort hver runde.</p>
           <p className="mt-1">Finn alle parene for å fullføre brettet.</p>
-          <p className="mt-3 text-xs">
-            Bildemotiv kan legges til senere ved å bytte ut kortetikettene.
-          </p>
+
           <p className="mt-2 text-xs">
             Pairs: {matchedPairs}/{totalPairs}
           </p>
