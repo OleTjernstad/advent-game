@@ -1,4 +1,4 @@
-import { Crosshair, RotateCcw, Timer, Trophy } from 'lucide-react'
+import { RotateCcw, Timer, Trophy } from 'lucide-react'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { GameProps } from '../types'
@@ -8,7 +8,10 @@ const SPOT_COUNT = 9
 const ROUND_SECONDS = 30
 const POP_INTERVAL_MS = 950
 
+const CACHE_TYPES = ['multi', 'trad', 'webcam', 'wherigo'] as const
+
 type GameStatus = 'idle' | 'running' | 'ended'
+type CacheType = (typeof CACHE_TYPES)[number]
 
 function randomSpot(previousSpot: number | null) {
   let nextSpot = Math.floor(Math.random() * SPOT_COUNT)
@@ -19,8 +22,24 @@ function randomSpot(previousSpot: number | null) {
   return nextSpot
 }
 
+function randomCacheType() {
+  return CACHE_TYPES[Math.floor(Math.random() * CACHE_TYPES.length)]
+}
+
+const CACHE_LABELS: Record<CacheType, string> = {
+  multi: 'Multi',
+  trad: 'Tradisjonell',
+  webcam: 'Webcam',
+  wherigo: 'Wherigo',
+}
+
+function createEmptyCacheTypeCounts(): Record<CacheType, number> {
+  return { multi: 0, trad: 0, webcam: 0, wherigo: 0 }
+}
+
 export function WhackAMoleGame({ onInteraction }: GameProps) {
   const [activeSpot, setActiveSpot] = useState<number | null>(null)
+  const [activeCacheType, setActiveCacheType] = useState<CacheType | null>(null)
   const [hitSpot, setHitSpot] = useState<number | null>(null)
   const [hitBurstKey, setHitBurstKey] = useState(0)
   const [missSpot, setMissSpot] = useState<number | null>(null)
@@ -30,6 +49,9 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
   const [score, setScore] = useState(0)
   const [misses, setMisses] = useState(0)
   const [bestScore, setBestScore] = useState(0)
+  const [hitsByCacheType, setHitsByCacheType] = useState<
+    Record<CacheType, number>
+  >(createEmptyCacheTypeCounts())
 
   const clickCountRef = useRef(0)
   const interactionReportedRef = useRef(false)
@@ -69,6 +91,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
           window.clearInterval(timer)
           setStatus('ended')
           setActiveSpot(null)
+          setActiveCacheType(null)
           return 0
         }
 
@@ -83,9 +106,11 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
     if (status !== 'running') return
 
     setActiveSpot((currentSpot) => randomSpot(currentSpot))
+    setActiveCacheType(randomCacheType())
 
     const popTimer = window.setInterval(() => {
       setActiveSpot((currentSpot) => randomSpot(currentSpot))
+      setActiveCacheType(randomCacheType())
     }, POP_INTERVAL_MS)
 
     return () => window.clearInterval(popTimer)
@@ -105,8 +130,10 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
   const startRound = useCallback(() => {
     setScore(0)
     setMisses(0)
+    setHitsByCacheType(createEmptyCacheTypeCounts())
     setTimeLeft(ROUND_SECONDS)
     setActiveSpot(null)
+    setActiveCacheType(null)
     setHitSpot(null)
     setHitBurstKey(0)
     setMissSpot(null)
@@ -127,6 +154,14 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
         setHitSpot(spotIndex)
         setHitBurstKey((current) => current + 1)
 
+        if (activeCacheType) {
+          const hitCacheType = activeCacheType
+          setHitsByCacheType((current) => ({
+            ...current,
+            [hitCacheType]: current[hitCacheType] + 1,
+          }))
+        }
+
         if (hitFeedbackTimeoutRef.current !== null) {
           window.clearTimeout(hitFeedbackTimeoutRef.current)
         }
@@ -136,6 +171,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
         }, 320)
 
         setActiveSpot((currentSpot) => randomSpot(currentSpot))
+        setActiveCacheType(randomCacheType())
         return
       }
 
@@ -167,7 +203,7 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
         },
       )
     },
-    [activeSpot, status],
+    [activeCacheType, activeSpot, status],
   )
 
   const accuracy =
@@ -213,6 +249,24 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
             </div>
           </div>
 
+          <div className="mb-4 grid grid-cols-4 gap-3">
+            {CACHE_TYPES.map((cacheType) => (
+              <div
+                key={cacheType}
+                className="flex flex-col items-center gap-1 rounded-xl border border-border bg-muted/40 p-3 text-center"
+              >
+                <img
+                  src={`/mole/${cacheType}.svg`}
+                  alt={CACHE_LABELS[cacheType]}
+                  className="h-6 w-6"
+                />
+                <strong className="text-lg text-card-foreground">
+                  {hitsByCacheType[cacheType]}
+                </strong>
+              </div>
+            ))}
+          </div>
+
           <div className="mx-auto grid w-full max-w-120 grid-cols-3 gap-3 rounded-2xl border-2 border-border bg-muted/30 p-3">
             {Array.from({ length: SPOT_COUNT }, (_, index) => {
               const isActive = activeSpot === index && status === 'running'
@@ -232,14 +286,16 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
                       ? 'border-emerald-500/70 bg-emerald-500/15'
                       : 'border-border bg-card hover:bg-accent'
                   }`}
-                  aria-label={
-                    isActive ? 'Aktivt mål' : 'Tomt målområde'
-                  }
+                  aria-label={isActive ? 'Aktivt mål' : 'Tomt målområde'}
                 >
                   {isActive ? (
                     <span className="absolute inset-0 flex items-center justify-center">
-                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-400/25 text-emerald-200 shadow-[0_0_0_1px_rgba(0,0,0,0.25)]">
-                        <Crosshair className="h-6 w-6" />
+                      <span className="inline-flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/70 bg-emerald-400/25 shadow-[0_0_0_1px_rgba(0,0,0,0.25)]">
+                        <img
+                          src={`/mole/${activeCacheType ?? 'trad'}.svg`}
+                          alt="Geocache"
+                          className="h-11 w-11"
+                        />
                       </span>
                     </span>
                   ) : null}
@@ -300,11 +356,13 @@ export function WhackAMoleGame({ onInteraction }: GameProps) {
           <h3 className="text-base font-semibold text-card-foreground">
             Slik spiller du
           </h3>
-          <p className="mt-2">
-            Et mål dukker opp i ett område om gangen.
+          <p className="mt-2">Start ved å trykke på "Start runde"-knappen.</p>
+          <p className="mt-1">
+            Når runden starter vil det dukke opp mål som du må treffe før de
+            forsvinner, men vær rask, plutselig har målet flyttet seg til en
+            annen rute. Når runden er over og underveis kan du følge med på
+            antall treff og bom, og dette utgjør da din treffprosent.
           </p>
-          <p className="mt-1">Trykk på det før det flytter seg for å få treff.</p>
-          <p className="mt-1">Bommerter registreres som bommerter.</p>
         </aside>
       </div>
     </section>
